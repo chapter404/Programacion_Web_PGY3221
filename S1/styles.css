@@ -1,0 +1,60 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.contenedor {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.contenedor-grid {
+    position:absolute;
+    display: grid;
+    height: 100vh;
+    width: 100%;
+    background: lightseagreen;
+    grid-template-columns: 150px auto 150px;
+    grid-template-rows: 300px auto 400px;
+}
+
+
+.arriba-izquierda {
+    grid-column: 1/3;
+    grid-row: 1/3;
+    margin: 40px 0 0 40px;
+}
+
+.buscar {
+    grid-row: 2/3;
+    grid-column: 2/3;
+    text-align: center;
+}
+
+.buscar h1 {
+    margin-bottom: 15px;
+}
+
+
+input {
+    height: 35px;
+    width: 550px;
+    border: none;
+    background: lightgray;
+
+}
+
+.sel-buscar {
+    position: absolute;
+    height: 35px;
+    padding: 5px;
+    border: none;
+    background: lightgray;
+}
+
+.categorias {
+    grid-row: 3/3;
+    position: absolute;
+    align-self: center;
+}
