@@ -1,77 +1,80 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
 }
-
 
 .contenedor-grid {
-    position: absolute;
-    display: grid;
-    height: 100vh;
-    width: 100%;
-    background: lightseagreen;
-    grid-template-columns: 150px auto 150px;
-    grid-template-rows: 50px 250px 100px auto 200px;
+  display: grid;
+  height: 100vh;
+  background: lightseagreen;
+  grid-template-columns: 150px auto auto 150px;
+  grid-template-rows: 40px 250px 100px auto 200px;
 }
 
 
-.arriba-izquierda {
-    grid-column: 1/3;
-    grid-row: 1/2;
-    margin: 40px 0 0 40px;
+.barra-superior {
+  grid-column: 1/5;
+  grid-row: 1/2;
+  border: 2px solid black;
 }
 
 .buscar {
-    margin-top: 150px;
-    grid-row: 2/3;
-    grid-column: 2/3;
-    text-align: center;
+  margin-top: 40px;
+  height: 300px;
+  margin-right: 0;
+  grid-row: 2/3;
+  grid-column: 1/5;
+  text-align: center;
+  border: 2px solid black;
 }
 
 .buscar h1 {
-    margin-bottom: 15px;
+  margin-bottom: 15px;
 }
 
-
 input {
-    height: 35px;
-    width: 550px;
-    border: none;
-    background: lightgray;
-
+  height: 35px;
+  width: 550px;
+  border: none;
+  background: lightgray;
 }
 
 .sel-buscar {
-    position: absolute;
-    height: 35px;
-    padding: 5px;
-    border: none;
-    background: lightgray;
+  position: absolute;
+  height: 35px;
+  padding: 5px;
+  border: none;
+  background: lightgray;
 }
 
 .contenedor-cat {
-    margin-top: 20px;
-    grid-row: 3/5;
-    grid-column: 2/3;
-    height: 550px;
-    background: red;
+  margin-top: 30px;
+  grid-row: 4/5;
+  grid-column: 3/4;
+  display: flex;
+  height: 520px;
+  width: 850px;
+  border: solid 2px black;
+  text-align: center;
+  align-items: center;
 }
 
 .cat {
-    background-color: blue;
-    height: 180px;
-    width: 180px;
-    margin: 50px;
+  background-color: blue;
+  height: 180px;
+  width: 180px;
+  margin: 50px;
+  grid-column: 1/3;
 }
 
 .cat-horizontal {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 img {
-    height: 170px;
-    width: 170px;
+  height: 180px;
+  width: 180px;
 }
