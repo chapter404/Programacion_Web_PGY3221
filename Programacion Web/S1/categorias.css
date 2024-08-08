@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+.contenedor-grid {
+    display: grid;
+    height: 100%;
+    background: lightseagreen;
+    grid-template-columns: 350px auto;
+    grid-template-rows: 1fr 1fr 100px;
+}
+
+aside {
+    height: 100%;
+    width: 100%;
+    background: lightsalmon;
+    grid-column: 1/2;
+    grid-row: 1/4;
+    place-content: center;
+}
+
+aside ul {
+    display: flex;
+    flex-direction: column;
+    margin: 50px;
+    gap: 45px;
+}
+
+ul {
+    list-style: none;
+    font-size: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+a {
+    text-decoration: none;
+    height: 150px;
+    width: 230px;
+    margin: 50px;
+}
+
+
+
+main {
+    grid-row: 1/4;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    background: lightcoral;
+    height: 100%;
+    width: 100%;
+    place-items: center;
+}
+
+.buscador {
+    position: absolute;
+    top: 100px;
+    grid-row: 2/3;
+    grid-column: 2/4;
+    align-content: center;
+    place-content: center;
+    place-self: center;
+}
+
+input {
+    height: 50px;
+    width: 500px;
+}
+
+.contenedor-game {
+    place-content: center;
+    display: flex;
+    width: 1000px;
+    flex-direction: row;
+    grid-column: 2/4;
+    grid-row: 2/3;
+    flex-wrap: wrap;
+}
+
+.contenido-game {
+    background-color: blue;
+    height: 150px;
+    width: 230px;
+    margin: 50px;
+}
+

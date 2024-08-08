@@ -20,6 +20,7 @@ html, body {
   grid-row: 1/2;
   border: 2px solid black;
   background: red;
+  padding: 10px;
 }
 
 .buscar {
@@ -98,3 +99,4 @@ input {
   left: 5px;
 
 }
+
