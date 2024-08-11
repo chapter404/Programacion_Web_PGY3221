@@ -1,57 +1,70 @@
-/* Reinicia los márgenes y rellenos por defecto de todos los elementos */
 * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
   margin: 0;
   padding: 0;
 }
 
-/* Asegura que el HTML y el body ocupen toda la altura y el ancho de la ventana */
-html, body {
-  height: 100%;
-  width: 100%;
-}
-
-/* Establece la fuente principal del documento y algunos atributos de tipografía */
 body {
   font-family: "Montserrat", sans-serif;
-  font-optical-sizing: auto; /* Ajusta el tamaño óptico de la fuente */
-  font-weight: bold; /* Define la fuente en negrita */
+  font-optical-sizing: auto;
+  font-weight: bold;
 }
 
-/* Define un contenedor de cuadrícula para la disposición de la página */
 .contenedor-grid {
+  min-height: 100vh;
+  height: 100%;
   display: grid;
-  background: lightseagreen;
-  grid-template-columns: 150px auto auto 150px; /* Define una cuadrícula con cuatro columnas */
-  grid-template-rows: 40px 250px 100px auto 200px; /* Define cinco filas con diferentes alturas */
+  grid-template-columns: repeat(10, 1fr);
+  grid-template-rows: repeat(10, 1fr);
+
+  padding-bottom: 50px;
 }
 
-/* Estilo para la barra superior que ocupa toda la primera fila de la cuadrícula */
+.contenedor-grid::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: url("./imagenes/banner_categorias.webp");
+  opacity: 0.7;
+  filter: blur(5px);
+  z-index: -1;
+}
+
 .barra-superior {
-  grid-column: 1/5; /* Ocupa las cuatro columnas de la cuadrícula */
-  grid-row: 1/2; /* Ocupa la primera fila de la cuadrícula */
-  border: 2px solid black;
-  background: red;
-  padding: 10px; /* Añade un relleno interno de 10px */
+  grid-column: 1/11;
+  height: 40px;
+  border: none;
+  background: rgb(224, 166, 4);
+  padding: 10px;
 }
 
-/* Estilo para la sección de búsqueda, que ocupa toda la segunda fila de la cuadrícula */
 .buscar {
-  margin-top: 40px;
-  height: 300px;
+  margin-top: 0;
+  height: 100%;
   margin-right: 0;
-  grid-row: 2/3; /* Ocupa la segunda fila de la cuadrícula */
-  grid-column: 1/5; /* Ocupa las cuatro columnas de la cuadrícula */
-  text-align: center; /* Centra el texto horizontalmente */
-  border: 2px solid black;
-  background: blue;
+  grid-row: 2/7;
+  grid-column: 1/11;
+  text-align: center;
+  border: none;
 }
 
-/* Estilo para los encabezados h1 dentro de la sección de búsqueda */
 .buscar h1 {
-  margin-bottom: 15px; /* Añade un margen inferior de 15px */
+  margin-bottom: 15px;
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-style: normal;
 }
 
-/* Estilo para el campo de entrada de texto */
 input {
   height: 35px;
   width: 550px;
@@ -59,7 +72,6 @@ input {
   background: lightgray;
 }
 
-/* Estilo para el selector de búsqueda */
 .sel-buscar {
   position: absolute;
   height: 35px;
@@ -68,54 +80,52 @@ input {
   background: lightgray;
 }
 
-/* Estilo para el contenedor de categorías, ubicado en la cuarta fila y tercera columna de la cuadrícula */
 .contenedor-cat {
   margin-top: 10px;
-  grid-row: 4/5; /* Ocupa la cuarta fila de la cuadrícula */
-  grid-column: 3/4; /* Ocupa la tercera columna de la cuadrícula */
-  display: flex;
-  height: 520px;
-  width: 850px;
-  border: solid 2px black;
-  text-align: center; /* Centra el texto horizontalmente */
-  align-items: center; /* Centra los elementos verticalmente */
-  background: orange;
+  grid-row: 4/11;
+  grid-column: 3/9;
+  height: 100%;
+  width: 100%;
+  border: 2px solid rgb(230, 172, 12);
+  border-radius: 10px;
+  text-align: center;
+  align-items: center;
+  background: rgb(44, 41, 41);
 }
 
-/* Estilo para cada categoría dentro del contenedor de categorías */
 .cat {
   background-color: blue;
+  border: rgb(230, 172, 12);
   height: 180px;
   width: 180px;
   margin: 30px;
   grid-column: 1/3;
-  cursor: pointer; /* Cambia el cursor a pointer al pasar sobre el elemento */
+  cursor: pointer;
 }
 
-/* Estilo hover para las categorías, añade un borde blanco */
 .cat:hover {
-  border: 4px solid white;
+  border: 3px solid rgb(230, 172, 12);
+  transform: scale(1.08);
+  transition: transform 0.5s;
+
 }
 
-/* Estilo para organizar las categorías en fila */
 .cat-horizontal {
   display: flex;
-  flex-direction: row; /* Alinea los elementos en fila */
-  flex-wrap: wrap; /* Permite que los elementos se envuelvan en varias filas si no caben en una sola */
-  justify-content: center; /* Centra horizontalmente las categorías */
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
-/* Estilo para las imágenes dentro de las categorías */
 .foto-cat {
   height: 180px;
   width: 180px;
 }
 
-/* Estilo para las imágenes de búsqueda, ubicadas cerca del campo de entrada */
 .foto-buscar {
   position: relative;
   height: 40px;
   bottom: 7px;
   left: 5px;
-  cursor: pointer; /* Cambia el cursor a pointer al pasar sobre el elemento */
+  cursor: pointer;
 }
