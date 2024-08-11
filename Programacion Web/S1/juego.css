@@ -1,0 +1,114 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+}
+
+
+header {
+    position: absolute;
+    background: blue;
+    border-bottom: black solid 4px;
+    width: 100%;
+    padding: 25px 0 25px 0;
+}
+
+header nav {
+    display: flex;
+    justify-content: center;
+    gap: 1650px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.contenedor-grid {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 100px 1fr 1fr;
+
+}
+
+
+main {
+    width: 100%;
+    background: lightcoral;
+    grid-column: 1/2;
+    grid-row: 1/4;
+    display: grid;
+    grid-template-rows: 1fr 4fr auto 1fr ;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+
+}
+
+
+aside {
+    width: 100%;
+    grid-row: 1/4;
+    grid-template-columns: 1/3;
+    background: orangered;
+    border-left: 4px solid black;
+}
+
+img {
+    height: 600px;
+}
+
+.info-juego {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    grid-row: 2/3;
+    background: red;
+    margin: 0 50px 0 50px;
+
+}
+
+img, small, h1 {
+    padding: 2px;
+}
+
+h1, .carrito  {
+    border: 3px solid black;
+    padding: 5px;
+}
+
+.columna {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-left: 120px;
+}
+
+a {
+    display: block;
+}
+
+aside p {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 90px;
+}
+
+footer {
+    position: absolute;
+    bottom: 20px;
+    left: 600px;
+    font-size: 30px;
+}
