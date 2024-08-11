@@ -170,3 +170,11 @@ a .imagen-juego  {
 .contenedor-imagen a img:hover {
     filter: brightness(0.5);
 }
+
+img {
+        width: 50%; /* La imagen ocupará el 50% del ancho del contenedor */
+        height: auto; /* El alto se ajustará automáticamente para mantener la proporción */
+       
+    
+    
+}
