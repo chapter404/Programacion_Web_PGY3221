@@ -162,3 +162,7 @@ a .imagen-juego  {
     position: relative;
     bottom: 50px;
 }
+
+.contenedor-imagen a img:hover {
+    filter: brightness(0.5);
+}
