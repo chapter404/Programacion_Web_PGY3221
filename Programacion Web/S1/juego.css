@@ -1,0 +1,139 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+}
+
+
+header {
+    position: absolute;
+    background: rgb(230, 172, 12);
+    border-bottom: black solid 4px;
+    width: 100%;
+    padding: 25px 0 25px 0;
+}
+
+header nav {
+    display: flex;
+    justify-content: center;
+    gap: 1600px;
+    font-size: 20px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.contenedor-grid {
+    height: 100%;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    grid-template-rows: 100px 1fr 1fr;
+
+}
+
+
+main {
+    width: 100%;
+    background: url("./imagenes/fondo3.webp") no-repeat ;
+    background-size: cover;
+    grid-column: 1/2;
+    grid-row: 1/4;
+    display: grid;
+    grid-template-rows: 1fr 4fr auto 1fr ;
+    grid-template-columns: 1fr 4fr 1fr;
+}
+
+
+aside {
+    width: 100%;
+    grid-row: 1/4;
+    grid-template-columns: 1/3;
+    background: rgb(44, 41, 41);
+    border-left: 4px solid black;
+    color: rgb(230, 172, 12);
+}
+
+.info-juego img {
+    height: 600px;
+    width: 800px;
+}
+
+
+.info-juego {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    grid-row: 2/3;
+    grid-column: 1/4;
+    margin: 0 50px 0 50px;
+    padding: 10px;
+    color: rgb(230, 172, 12);
+}
+
+small, h1 {
+    padding: 10px;
+}
+
+img {
+    margin-top: 80px;
+}
+
+.carrito {
+    padding: 10px;
+}
+
+h1, .carrito {
+    border: 3px solid rgb(230, 172, 12);
+    border-radius: 10px;
+    border-style:double;
+}
+
+.columna {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 10px;
+    margin-left: 120px;
+}
+h1, .columna, a {
+    color: rgb(230, 172, 12);
+    text-shadow: 0 0 10px;
+}
+nav a {
+    display: block;
+    color: black;
+    text-shadow: 0 0 15px;
+
+}
+
+a:hover {
+    color: white;
+}
+
+aside p {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+    margin-top: 90px;
+    font-size: 20px;
+}
+
+footer {
+    position: absolute;
+    bottom: 20px;
+    left: 600px;
+    font-size: 30px;
+}
