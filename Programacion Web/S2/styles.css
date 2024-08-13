@@ -1,0 +1,23 @@
+.row {
+    background-color: red;
+    color: white;
+    height: 100px;
+    align-items: center;
+}
+
+a {
+    text-decoration: none;
+}
+
+.col {
+    font-size: 30px;
+    display: flex;
+}
+
+.nombre {
+    justify-content: start;
+}
+
+.iniciar {
+    justify-content: end;
+}
