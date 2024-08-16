@@ -3,12 +3,12 @@ html, body {
     margin: 0;
 }
 
-.navbar-custom {
+.barra-navegacion-personalizada {
     height: 50px;
     background-color: rgb(224, 166, 4);
 }
 
-.content-wrapper {
+.contenedor-principal {
     position: relative;
     flex-grow: 1;
     display: flex;
@@ -19,7 +19,7 @@ html, body {
     overflow: hidden;
 }
 
-.content-wrapper::before {
+.contenedor-principal::before {
     content: "";
     position: absolute;
     top: 0;
@@ -34,7 +34,7 @@ html, body {
     z-index: 1;
 }
 
-.image-container {
+.contenedor-imagenes {
     position: relative;
     z-index: 2;
     background-color: #444;
@@ -44,7 +44,7 @@ html, body {
     max-width: 1000px;
 }
 
-.search-container {
+.contenedor-buscador {
     position: absolute;
     top: 0px;
     z-index: 3;
@@ -53,13 +53,13 @@ html, body {
     max-width: 800px;
 }
 
-.search-container h2 {
+.contenedor-buscador h2 {
     color: rgb(224, 166, 4);
     text-shadow: 2px 2px black;
     margin-bottom: 10px;
 }
 
-.search-container input {
+.contenedor-buscador input {
     border-radius: 30px;
     padding: 10px 20px;
     width: 100%;
@@ -67,7 +67,7 @@ html, body {
     border: 1px solid #ccc;
 }
 
-.search-container button {
+.contenedor-buscador button {
     border-radius: 30px;
     padding: 10px 20px;
     margin-left: 10px;
