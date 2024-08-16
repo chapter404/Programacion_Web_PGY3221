@@ -1,0 +1,80 @@
+1--
+CREATE OR REPLACE FUNCTION obtener_atenciones_periodo(p_periodo IN VARCHAR2) 
+RETURN NUMBER IS
+   v_cantidad NUMBER;
+BEGIN
+   SELECT COUNT(*)
+   INTO v_cantidad
+   FROM atenciones
+   WHERE TO_CHAR(fecha_atencion, 'MM-YYYY') = p_periodo;
+   
+   RETURN v_cantidad;
+END;
+
+2--
+CREATE OR REPLACE FUNCTION obtener_atenciones_especialidad(p_especialidad_id IN NUMBER, p_periodo IN VARCHAR2) 
+RETURN NUMBER IS
+   v_cantidad NUMBER;
+BEGIN
+   SELECT COUNT(*)
+   INTO v_cantidad
+   FROM atenciones
+   WHERE especialidad_id = p_especialidad_id
+   AND TO_CHAR(fecha_atencion, 'MM-YYYY') = p_periodo;
+   
+   RETURN v_cantidad;
+END;
+
+3--
+CREATE OR REPLACE FUNCTION obtener_costo_promedio_especialidad(p_especialidad_id IN NUMBER, p_periodo IN VARCHAR2) 
+RETURN NUMBER IS
+   v_costo_promedio NUMBER;
+BEGIN
+   SELECT AVG(costo_atencion)
+   INTO v_costo_promedio
+   FROM atenciones
+   WHERE especialidad_id = p_especialidad_id
+   AND TO_CHAR(fecha_atencion, 'MM-YYYY') = p_periodo;
+   
+   RETURN v_costo_promedio;
+END;
+
+
+--4 Informe
+
+CREATE OR REPLACE FUNCTION emitir_informe_especialidades(p_periodo IN VARCHAR2)
+RETURN BOOLEAN IS
+    v_registros_existentes BOOLEAN := FALSE;
+    v_total_atenciones NUMBER := 0;
+BEGIN
+
+    SELECT COUNT(*)
+    INTO v_total_atenciones
+    FROM atenciones
+    WHERE TO_CHAR(fecha_atencion, 'MM-YYYY') = p_periodo;
+
+
+    FOR rec IN (SELECT especialidad_id, COUNT(*) AS cantidad_atenciones, NVL(AVG(costo_atencion), 0) AS costo_promedio
+                FROM atenciones
+                WHERE TO_CHAR(fecha_atencion, 'MM-YYYY') = p_periodo
+                GROUP BY especialidad_id) LOOP
+
+        DBMS_OUTPUT.PUT_LINE('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+        DBMS_OUTPUT.PUT_LINE('---------- Especialidad ID: ' || rec.especialidad_id);
+        DBMS_OUTPUT.PUT_LINE('---------- Costo promedio : ' || TO_CHAR(rec.costo_promedio, '$99,999'));
+        DBMS_OUTPUT.PUT_LINE('---------- Total atenciones : ' || rec.cantidad_atenciones);
+        DBMS_OUTPUT.PUT_LINE('---------- % del total : ' || TO_CHAR((rec.cantidad_atenciones / v_total_atenciones) * 100, '99.99') || '%');
+        DBMS_OUTPUT.PUT_LINE('+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++');
+
+        v_registros_existentes := TRUE;
+    END LOOP;
+
+	IF v_registros_existentes THEN
+        DBMS_OUTPUT.PUT_LINE('Listado emitido.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('No se encontraron registros para el período especificado.');
+        DBMS_OUTPUT.PUT_LINE('Listado no emitido.');
+    END IF;
+    RETURN v_registros_existentes;
+END;
+/
