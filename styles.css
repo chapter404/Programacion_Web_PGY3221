@@ -1,0 +1,11 @@
+.contenedor-principal {
+    justify-content: center;
+}
+
+.navbar {
+    background: yellow;
+}
+
+.contenedor-buscador {
+    margin: 50px;
+}
