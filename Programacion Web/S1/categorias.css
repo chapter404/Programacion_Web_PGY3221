@@ -24,7 +24,7 @@ body {
 aside {
     height: 100%;
     width: 100%;
-    background: lightsalmon;
+    background: rgb(253, 5, 5);
     grid-column: 1/2;
     grid-row: 1/4;
     place-content: center;
@@ -70,7 +70,7 @@ main {
     width: 100%;
     grid-template-columns: 1fr 4fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
-    background: lightcoral;
+    background: rgb(255, 217, 2);
 }
 
 .contenedor-main {
