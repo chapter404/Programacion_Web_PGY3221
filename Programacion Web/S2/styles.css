@@ -42,7 +42,9 @@ html, body {
     padding: 30px;
     width: 100%;
     max-width: 1000px;
+    border: solid rgb(224, 166, 4);
 }
+
 
 .contenedor-buscador {
     position: absolute;
