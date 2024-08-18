@@ -57,7 +57,7 @@ a:hover {
 
 .imagen-juego {
     max-width: 100%;
-    width: 800px;
+    width: 650px;
     height: auto;
     margin-bottom: 20px;
 }
@@ -97,22 +97,6 @@ a:hover {
     background-color: #ffc107;
 }
 
-.boton-volver {
-    background-color: #fbc02d;
-    color: black;
-    border: none;
-    font-weight: bold;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
-    text-decoration: none;
-    border-radius: 5px;
-    box-shadow: 0 0 10px #fbc02d;
-}
-
-.boton-volver:hover {
-    background-color: #ffc107;
-}
 
 .lado-derecho {
     width: 300px;
