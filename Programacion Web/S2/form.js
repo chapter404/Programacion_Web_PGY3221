@@ -62,5 +62,16 @@ document.addEventListener('DOMContentLoaded', function() {
             valid = false;
         }
 
+        if (valid) {
+            document.querySelectorAll('.text-danger').forEach(element => {
+                element.textContent = '';
+            });
+            document.getElementById('formulario-registro').reset();
+            document.getElementById('mensaje_error').textContent = '';
+            alert('Registro exitoso');
+        } else {
+            document.getElementById('mensaje_error').textContent = 'Por favor, corrija el formulario';
+        }
+
     });
 });
