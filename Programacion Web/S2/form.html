@@ -58,7 +58,19 @@
             <div class="form-group" id="botones_registro">
                 <button type="submit" class="btn btn-primary" onclick="validar()">Registrarse</button>
                 <button type="reset" class="btn btn-secondary">Limpiar</button>
+                <button type="button" class="btn btn-secondary" onclick="resetFormAndGoBack()">Volver</button>
             </div>
+            
+            <script>
+                function resetFormAndGoBack() {
+                    
+                    document.querySelector('form').reset();
+                    
+                   
+                    window.location.href = 'index.html';
+                }
+            </script>
+            
 
             <div id="mensaje_error" class="text-danger"></div>
         </form>
