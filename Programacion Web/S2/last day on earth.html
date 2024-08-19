@@ -1,53 +1,49 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Call of Duty</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="juego.css">
-    <title>Last Day on Earth</title>
+    <link rel="stylesheet" href="juego.css"> 
 </head>
 <body>
-    <header>
-        <nav>
-            <a href="./index.html"> Categorias</a>
-            <a href="">Iniciar Sesion</a>
-        </nav>
-    </header>
 
-    <div class="contenedor-grid">
-        <main>
-            <div class="info-juego">
-                <img src="./imagenes/last day on earth.jpg" alt="">
-                <small>Inicie sesión para añadir el articulo a su carrito</small>
-                <br>
-                <h1>Last Day on Earth</h1>
-                <br>
-                <div class="columna">
-                    <h2>CLP$ 15.000 </h2>
-                    <a href="" class="carrito">Añadir al carrito</a>
-    
-                </div>
+    <nav class="navbar navbar-expand-lg navbar-light">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="./index.html">Categorias</a>
+            <div class="collapse navbar-collapse justify-content-end">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link enlace-sesion" href="#">Iniciar Sesión</a>
+                    </li>
+                </ul>
             </div>
-            
-        </main>
+        </div>
+    </nav>
 
-      
-        <aside>
+    <div class="contenedor-principal">
+        <div class="contenido-principal">
+            <img src="./imagenes/last day on earth.jpg" alt="last" class="imagen-juego">
+            <small>Inicie sesión para añadir el artículo a su carrito</small>
+            <h1 class="titulo-juego">Last Day On Earth</h1>
+            <div class="precio-juego">
+                Precio: $15.000
+            </div>
+            <div class="text-center">
+                <button class="boton-amarillo">Añadir al carrito</button>
+            </div>
+        </div>
+        <div class="lado-derecho">
             <p>
                 Last Day on Earth es un juego de supervivencia en un mundo post-apocalíptico. Tendrás que recolectar recursos, construir refugios y cazar animales para sobrevivir. El juego cuenta con un mundo abierto en el que podrás explorar y descubrir los secretos de este mundo devastado. Last Day on Earth está disponible en Android y iOS.
-            </p>
-        </aside>
-
+            </p>    
+        </div>
     </div>
 
-
-    <footer>
-        <a href="./supervivencia.html">Volver</a>
-    </footer>
-    
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
