@@ -21,23 +21,23 @@ body {
 }
 
 .enlace-sesion {
-    color: black !important; /* Cambiado a negro para mejor visibilidad */
+    color: black !important;
     text-shadow: 0 0 10px #fbc02d;
-    text-decoration: none; /* Elimina el subrayado */
+    text-decoration: none;
 }
 
 .enlace-sesion:hover {
-    color: #ffc107; /* Cambia el color al pasar el ratón por encima */
+    color: #ffc107; 
 }
 
 a {
-    color: black; /* Asegura que el color del enlace sea visible */
-    text-shadow: 0 0 10px #fbc02d; /* Agrega sombra al texto */
-    text-decoration: none; /* Elimina el subrayado */
+    color: black;
+    text-shadow: 0 0 10px #fbc02d; 
+    text-decoration: none; 
 }
 
 a:hover {
-    color: #ffc107; /* Cambia el color al pasar el ratón por encima */
+    color: #ffc107; 
 }
 
 .contenedor-principal {
