@@ -1,47 +1,26 @@
-.form-group {
-    margin-bottom: 10px;
-}
-
-#botones_registro {
-    padding: 15px 0 30px 0;
-}
-
-
-.form-group input {
-    border: 3px #fbc02d solid;
-    box-shadow: 0 0 10px #fbc02d;
-    transition: box-shadow 0.3s ease-in-out; 
-}
-
-html {
+body {
     background-color: #fbc02d;
     background-image: url("../imagenes/fondo3.webp");
 }
 
-
-.form-group input:focus {
-    box-shadow: 0 0 20px #fbc02d; 
-}
-
-body .mt-5 {
-    background:#4F4F4F ;
-}
-
-#formulario-registro, h2{
+#formulario-registro {
+    background: #4F4F4F;
+    padding: 1% 2% 2% 2%;
     color: white;
-}
-
-
-.container-fluid h2 {
-    color: white;
-}
-
-.form-group .btn {
-    background-color: #fbc02d;
-    border: none;
+    border: 3px solid #fbc02d;
+    border-radius: 5px;
     box-shadow: 0 0 10px #fbc02d;
 }
 
-.form-group .btn:hover {
+.form-control:hover {
+    box-shadow: 0 0 10px #2da9fb;
+}
+
+.btn {
+    border: none;
+}
+
+.btn:hover {
     background-color: #4F4F4F;
+    box-shadow: 0 0 10px #fbc02d;
 }
