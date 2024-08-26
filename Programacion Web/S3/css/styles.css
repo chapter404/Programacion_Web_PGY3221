@@ -39,6 +39,7 @@ html, body {
     z-index: 2;
     background-color: #444;
     border-radius: 10px;
+    margin-top: 100px;
     padding: 30px;
     width: 100%;
     max-width: 1000px;
@@ -78,3 +79,16 @@ html, body {
     color: white;
 }
 
+header {
+    border: 2px solid black;
+}
+
+nav a {
+    text-decoration: none;
+    font-weight: 500;
+}
+
+
+a img:hover {
+    border: 3px solid rgb(224, 166, 4);
+}
