@@ -3,5 +3,5 @@ from .views import libros, crear
 
 urlpatterns = [
     path('libros', libros, name="libros"),
-    path('libros/crear', crear, name="crear"),
+    path('libros/form', crear, name="form"),
 ]

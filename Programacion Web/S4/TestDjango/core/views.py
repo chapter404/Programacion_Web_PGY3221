@@ -6,4 +6,4 @@ def libros(request):
     return render(request, "index.html")
 
 def crear(request):
-    return render(request, "index.html")
+    return render(request, "form.html")
