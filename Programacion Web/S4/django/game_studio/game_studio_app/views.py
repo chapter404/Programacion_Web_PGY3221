@@ -35,3 +35,9 @@ def cod(request):
 
 def brawl(request):
     return render(request, 'brawl_stars.html')
+
+def zelda(request):
+    return render(request, 'zelda.html')
+
+def roblox(request):
+    return render(request, 'roblox.html')

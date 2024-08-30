@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras, silent_hill, resident_evil, cod, brawl
+from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras, silent_hill, resident_evil, cod, brawl, zelda, roblox
 
 urlpatterns = [
     path('', inicio, name="inicio"),
@@ -14,5 +14,7 @@ urlpatterns = [
     path('resident_evil', resident_evil, name="resident_evil"),
     path('cod', cod, name="cod"),
     path('brawl', brawl, name="brawl"),
+    path('zelda', zelda, name="zelda"),
+    path('roblox', roblox, name="roblox"),
 
 ]
