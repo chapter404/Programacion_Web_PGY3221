@@ -23,3 +23,6 @@ def supervivencia(request):
 
 def carreras(request):
     return render(request, 'carreras.html')
+
+def silent_hill(request):
+    return render(request, 'silent_hill_2.html')

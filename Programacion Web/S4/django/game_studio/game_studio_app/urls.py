@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras
+from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras, silent_hill
 
 urlpatterns = [
     path('', inicio, name="inicio"),
@@ -9,5 +9,6 @@ urlpatterns = [
     path('mundo_abierto', mundo_abierto, name="mundo_abierto"),
     path('free_to_play', free_to_play, name="free_to_play"),
     path('supervivencia', supervivencia, name="supervivencia"),
-    path('carreras', carreras, name="carreras")
+    path('carreras', carreras, name="carreras"),
+    path('silent_hill', silent_hill, name="silent_hill")
 ]
