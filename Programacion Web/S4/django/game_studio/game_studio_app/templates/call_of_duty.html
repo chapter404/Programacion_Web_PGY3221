@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -7,14 +8,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="../css/juego.css"> 
+    <link rel="stylesheet" href="{% static './css/juego.css' %}"> 
     <title>Call of duty</title>
 </head>
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="./index.html">Categorias</a>
+            <a class="navbar-brand" href="{% url 'inicio' %}">Categorias</a>
             <div class="collapse navbar-collapse justify-content-end">
                 <ul class="navbar-nav">
                     <li class="nav-item">
@@ -27,7 +28,7 @@
 
     <div class="contenedor-principal">
         <div class="contenido-principal">
-            <img src="../imagenes/call of duty.png" alt="Last Day on Earth" class="imagen-juego">
+            <img src="{% static './imagenes/call of duty.png' %}" alt="Last Day on Earth" class="imagen-juego">
             <small>Inicie sesión para añadir el artículo a su carrito</small>
             <h1 class="titulo-juego">Call Of Duty</h1>
             <div class="precio-juego">
