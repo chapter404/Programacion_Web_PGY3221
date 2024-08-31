@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras, silent_hill, resident_evil, cod, brawl, zelda, roblox
+from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras, silent_hill, resident_evil, cod, brawl, zelda, roblox, sims, csgo, ocean, last, mario, crash
 
 urlpatterns = [
     path('', inicio, name="inicio"),
@@ -16,5 +16,11 @@ urlpatterns = [
     path('brawl', brawl, name="brawl"),
     path('zelda', zelda, name="zelda"),
     path('roblox', roblox, name="roblox"),
+    path('sims', sims, name="sims"),
+    path('csgo', csgo, name="csgo"),
+    path('ocean', ocean, name="ocean"),
+    path('last', last, name="last"),
+    path('mario', mario, name="mario"),
+    path('crash', crash, name="crash"),
 
 ]
