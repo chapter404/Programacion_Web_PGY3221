@@ -111,3 +111,9 @@ a:hover {
 .lado-derecho p {
     margin: 0;
 }
+
+
+img {
+    border-radius: 30px;
+    border: solid 3px #f1c40f;
+}

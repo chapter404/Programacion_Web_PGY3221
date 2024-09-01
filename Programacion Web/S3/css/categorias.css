@@ -34,11 +34,12 @@ aside a {
     display: block;
     margin: 20px 0;
     font-size: 20px;
+    padding: 10px;
 }
 
 aside a:hover {
     text-decoration: none;
-    color: #fff;
+    color: black;
 }
 
 aside img {
@@ -89,14 +90,14 @@ main {
 }
 
 .contenedor-juego {
-    width: 200px;
+    width: 300px;
     text-align: center;
     font-size: 15px;
 }
 
 .contenedor-imagen {
     width: 100%;
-    height: 150px; 
+    height: 250px; 
     overflow: hidden;
     display: flex;
     justify-content: center;
@@ -108,10 +109,10 @@ main {
     height: 100%; 
     object-fit: cover; 
     transition: filter 0.3s;
+    border-radius: 20px;
 }
 
 .contenedor-imagen img:hover {
-    filter: brightness(0.6);
     border: #fbc02d 4px solid;
 }
 
@@ -130,4 +131,9 @@ a {
 
 ul {
     list-style: none;
+}
+
+.busqueda {
+    border: 3px solid #fbc02d;
+    border-radius: 10px;
 }
