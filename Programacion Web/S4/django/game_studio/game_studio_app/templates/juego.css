@@ -1,0 +1,119 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: bold;
+    background: url("../imagenes/fondo3.webp");
+    color: #f1c40f;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.navbar {
+    background-color: #fbc02d;
+    border-bottom: 2px solid black;
+}
+
+.navbar-brand, .nav-link {
+    color: black !important;
+    font-weight: bold;
+}
+
+.enlace-sesion {
+    color: black !important;
+    text-shadow: 0 0 10px #fbc02d;
+    text-decoration: none;
+}
+
+.enlace-sesion:hover {
+    color: #ffc107; 
+}
+
+a {
+    color: black;
+    text-shadow: 0 0 10px #fbc02d; 
+    text-decoration: none; 
+}
+
+a:hover {
+    color: #ffc107; 
+}
+
+.contenedor-principal {
+    display: flex;
+    height: calc(100vh - 56px);
+}
+
+.contenido-principal {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagen-juego {
+    max-width: 100%;
+    width: 650px;
+    height: auto;
+    margin-bottom: 20px;
+}
+
+.titulo-juego {
+    margin-top: 10px;
+    font-size: 36px;
+    color: #fbc02d;
+    text-align: center;
+    border: 2px solid #fbc02d;
+    padding: 10px 20px;
+    text-shadow: 0 0 10px #fbc02d;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #fbc02d;
+}
+
+.precio-juego {
+    margin: 20px 0;
+    font-size: 20px;
+    color: #fbc02d;
+    text-align: center;
+    text-shadow: 0 0 10px #fbc02d;
+}
+
+.boton-amarillo {
+    background-color: #fbc02d;
+    color: black;
+    border: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    text-shadow: 0 0 10px #fbc02d;
+}
+
+.boton-amarillo:hover {
+    background-color: #ffc107;
+}
+
+
+.lado-derecho {
+    width: 300px;
+    background-color: #333;
+    color: #f1c40f;
+    padding: 20px;
+    overflow-y: auto;
+    height: 100%;
+    border-left: 2px solid black;
+}
+
+.lado-derecho p {
+    margin: 0;
+}
+
+
+img {
+    border-radius: 30px;
+    border: solid 3px #f1c40f;
+}
