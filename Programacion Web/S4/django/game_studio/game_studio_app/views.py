@@ -48,12 +48,11 @@ def sims(request):
 def csgo(request):
     return render(request, 'csgo.html')
 
-
 def ocean(request):
-    return render(request, 'ocean is home.html')
+    return render(request, 'ocean_is_home.html')
 
 def last(request):
-    return render(request, 'last day on earth.html')
+    return render(request, 'last_day_on_earth.html')
 
 def mario(request):
     return render(request, 'mario_kart.html')
