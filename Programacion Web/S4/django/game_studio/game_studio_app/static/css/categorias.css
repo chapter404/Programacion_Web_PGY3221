@@ -19,14 +19,6 @@ body {
     flex-direction: column;
 }
 
-.contenedor-grid {
-    display: grid;
-    grid-template-columns: 350px auto;
-    grid-template-rows: 1fr auto;
-    flex: 1;
-    min-height: 100vh;
-}
-
 aside {
     background: #fbc02d;
     grid-column: 1/2;
@@ -76,7 +68,6 @@ main {
     justify-content: center;
     align-items: center;
     gap: 20px;
-    background-color: blueviolet;
 }
 
 .contenedor-juego {
@@ -126,4 +117,10 @@ ul {
 .busqueda {
     border: 3px solid #fbc02d;
     border-radius: 10px;
+}
+
+.row {
+    flex: 1;
+    display: flex;
+    height: 100%;
 }
