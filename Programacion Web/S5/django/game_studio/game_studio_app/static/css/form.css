@@ -1,0 +1,26 @@
+body {
+    background-color: #fbc02d;
+    background-image: url("../imagenes/fondo3.webp");
+}
+
+#formulario-registro {
+    background: #4F4F4F;
+    padding: 1% 2% 2% 2%;
+    color: white;
+    border: 3px solid #fbc02d;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #fbc02d;
+}
+
+.form-control:hover {
+    box-shadow: 0 0 10px #2da9fb;
+}
+
+.btn {
+    border: none;
+}
+
+.btn:hover {
+    background-color: #4F4F4F;
+    box-shadow: 0 0 10px #fbc02d;
+}
