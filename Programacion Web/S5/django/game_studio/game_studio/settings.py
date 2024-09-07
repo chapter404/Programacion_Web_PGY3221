@@ -83,7 +83,7 @@ DATABASES = {
         'OPTIONS': {
             'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
             'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
-            'wallet_password': 'Oracle123456'
+            'wallet_password': 'Oracle123456',
         }
     }
 }
