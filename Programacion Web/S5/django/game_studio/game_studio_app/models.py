@@ -21,4 +21,7 @@ class Games(models.Model):
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='inicio')
 
     def __str__(self):
-        return self.nombre
+        return self.get_code_name()
+    
+    def get_code_name(self):
+        return f"ISBN: {self.codigo_isbn} - {self.nombre}"
