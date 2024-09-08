@@ -38,8 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'game_studio_app',
-    'core'
+    'game_studio_app'
 ]
 
 MIDDLEWARE = [
@@ -78,13 +77,13 @@ WSGI_APPLICATION = 'game_studio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'gsbohitl0d7xba5e_high',
+        'NAME': 'bdgenerica2024_high',
         'USER': 'ADMIN',
-        'PASSWORD': 'Trinidad.1012',
+        'PASSWORD': 'Oracle123456',
         'OPTIONS': {
-            'config_dir': r'C:\Users\erika\Desktop\Duoc\wallet\Wallet_CBD_Cloud\Wallet_GSBOHITL0D7XBA5E',
-            'wallet_location': r'C:\Users\erika\Desktop\Duoc\wallet\Wallet_CBD_Cloud\Wallet_GSBOHITL0D7XBA5E',
-            'wallet_password': 'Trinidad.1012'
+            'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+            'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+            'wallet_password': 'Oracle123456',
         }
     }
 }
