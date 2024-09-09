@@ -20,9 +20,11 @@ class Games(models.Model):
     imagen = models.ImageField(upload_to='inicio/', null=True, blank=True)
     categoria = models.ForeignKey(Categoria, on_delete=models.CASCADE, related_name='inicio')
 
+class Producto(models.Model):
+    titulo = models.CharField(max_length=200)  
+    nombre = models.CharField(max_length=100)
+    descripcion = models.TextField()
+    precio = models.DecimalField(max_digits=10, decimal_places=2)
 
     def __str__(self):
-        return self.nombre
-    
-    def get_code_name(self):
-        return f"Nombre Juego: {self.nombre}"
+        return self.titulo 

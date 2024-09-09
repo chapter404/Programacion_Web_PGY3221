@@ -16,13 +16,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from django.conf import settings
-from django.conf.urls.static import static
-from game_studio_app import views
-
+from django.shortcuts import redirect
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('juego/', views.listado_juegos, name='listado_juegos'),
     path('GameAPP/', include('game_studio_app.urls')),
+    path('', include('game_studio_app.urls')),
+    path('', lambda request: redirect('')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
