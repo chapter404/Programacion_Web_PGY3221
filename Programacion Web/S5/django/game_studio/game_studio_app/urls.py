@@ -5,7 +5,6 @@ urlpatterns = [
     path('registro/', views.registro, name='registro'),
     path('protegida/', views.vista_protegida, name='protegida'),
     path('', inicio, name="inicio"),
-    path('', views.listado_juegos, name="listado_juegos"),
     path('registro', registro, name="registro"),
     path('terror', terror, name="terror"),
     path('accion', accion, name="accion"),
