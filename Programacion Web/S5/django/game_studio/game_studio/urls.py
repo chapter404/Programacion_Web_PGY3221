@@ -21,5 +21,5 @@ from django.shortcuts import redirect
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('game_studio_app.urls')),
-    path('', lambda request: redirect(''))
+    path('', lambda request: redirect('home'))
 ] 

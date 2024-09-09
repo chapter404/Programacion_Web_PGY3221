@@ -78,8 +78,6 @@ def registro(request):
             return redirect('home') 
     else:
         form = UserCreationForm()
-
-    # Ruta correcta para el template
     return render(request, 'game_studio_app/registro.html', {'form': form})
 
 @login_required
@@ -124,4 +122,5 @@ def eliminar_producto(request, pk):
         producto.delete()
         return redirect ('listar_productos')
     return render(request, 'game_studio_app/editar.html', {'producto': producto})
+
 

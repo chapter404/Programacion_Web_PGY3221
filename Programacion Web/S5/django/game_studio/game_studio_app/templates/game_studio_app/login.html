@@ -1,9 +1,7 @@
-<h2>Iniciar Sesion</h2>
-
+<!-- templates/game_studio_app/login.html -->
+<h2>Iniciar Sesión</h2>
 <form method="post">
     {% csrf_token %}
-    {{form.as_p}}
-    <button type="submit">Iniciar Sesion</button>
+    {{ form.as_p }}
+    <button type="submit">Iniciar sesión</button>
 </form>
-
-<p>¿No tienes cuenta? <a href="{% url 'registro' %}">Regístrate aquí</a></p>

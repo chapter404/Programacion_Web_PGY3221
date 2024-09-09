@@ -11,7 +11,7 @@ urlpatterns = [
     path('productos/crear/', views.crear_producto, name='crear_producto'),
     path('productos/editar/<int:pk>/', views.editar_producto, name='editar_producto'),
     path('productos/eliminar/<int:pk>/', views.eliminar_producto, name='eliminar_producto'),
-    path('', inicio, name="inicio"),
+    # path('', inicio, name="inicio"),
     # path('registro', registro, name="registro"),
     path('terror', terror, name="terror"),
     path('accion', accion, name="accion"),
@@ -32,6 +32,7 @@ urlpatterns = [
     path('mario', mario, name="mario"),
     path('crash', crash, name="crash"),
     path('login/', auth_views.LoginView.as_view(template_name='game_studio_app/login.html'), name='login'),
-    path('logout/', auth_views.LoginView.as_view(), name='logout'),
+    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    
 
 ]
