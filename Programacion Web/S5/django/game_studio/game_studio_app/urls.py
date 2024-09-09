@@ -2,7 +2,7 @@ from django.urls import path
 from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras, silent_hill, resident_evil, cod, brawl, zelda, roblox, sims, csgo, ocean, last, mario, crash
 
 urlpatterns = [
-    path('', inicio, name="inicio"),
+    path('inicio', inicio, name="inicio"),
     path('registro', registro, name="registro"),
     path('terror', terror, name="terror"),
     path('accion', accion, name="accion"),
