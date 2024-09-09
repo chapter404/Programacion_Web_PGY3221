@@ -12,21 +12,21 @@
     <header class="navbar navbar-expand-lg navbar-light bg-light mb-4">
         <nav class="container">
             <a class="navbar-brand" href="{% url 'home' %}">Mi App</a>
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
-                <li class="nav-item"><a class="nav-link" href="{% url 'listar_productos' %}">Productos</a></li>
+            <ul class="navbar-nav ms-auto align-items-center">
+                <li class="nav-item me-3"><a class="nav-link" href="{% url 'home' %}">Inicio</a></li>
+                <li class="nav-item me-3"><a class="nav-link" href="{% url 'listar_productos' %}">Productos</a></li>
 
                 {% if user.is_authenticated %}
                     <!-- Formulario para cerrar sesión con método POST -->
                     <li class="nav-item">
-                        <form method="POST" action="{% url 'logout' %}">
+                        <form method="POST" action="{% url 'logout' %}" style="display: inline;">
                             {% csrf_token %}
-                            <button type="submit" class="nav-link btn btn-link" style="display: inline; padding: 0; border: none;">Cerrar Sesión</button>
+                            <button type="submit" class="nav-link btn btn-link p-0" style="background: none; border: none;">Cerrar Sesión</button>
                         </form>
                     </li>
                 {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'registro' %}">Registrarse</a></li>
+                    <li class="nav-item me-3"><a class="nav-link" href="{% url 'login' %}">Iniciar Sesión</a></li>
+                    <li class="nav-item me-3"><a class="nav-link" href="{% url 'registro' %}">Registrarse</a></li>
                 {% endif %}
             </ul>
         </nav>
