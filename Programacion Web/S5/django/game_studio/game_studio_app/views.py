@@ -66,6 +66,6 @@ def crash(request):
 def listado_juegos(request):
     juegos = Games.objects.all()
     context = {
-        'juegos' : juegos
+        'juegos': juegos
     }
-    return render(request, 'index.html', context)
+    return render(request, 'juego/index.html', context)
