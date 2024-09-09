@@ -5,6 +5,8 @@ from django.contrib.auth.decorators import login_required
 from .models import Producto, Usuario
 from .forms import ProductoForm
 from django.shortcuts import get_object_or_404
+from django.http import HttpResponse
+
 
 def inicio(request):
     return render(request, 'index.html')
@@ -64,7 +66,8 @@ def mario(request):
 def crash(request):
     return render(request, 'ctr_crash.html')
 
-
+def home(request):
+    return render(request, 'game_studio_app/home.html')
 
 def registro(request):
     if request.method == 'POST':
@@ -72,21 +75,23 @@ def registro(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('home')
-        
-        else:
-            form = UserCreationForm()
-            return render(request, 'game_studio_app/registro.html', {'form': form})
-    
+            return redirect('home') 
+    else:
+        form = UserCreationForm()
 
+    # Ruta correcta para el template
+    return render(request, 'game_studio_app/registro.html', {'form': form})
+
+@login_required
 def vista_protegida(request):
     return render(request, 'game_studio_app/protegida.html')
 
-
+@login_required
 def listar_productos(request):
     productos = Producto.objects.all()
     return render(request, 'game_studio_app/listar.html', {'productos': productos})
 
+@login_required
 def crear_producto(request):
     if request.method == 'POST':
         form = ProductoForm(request.POST)
@@ -99,7 +104,7 @@ def crear_producto(request):
 
     return render(request, 'game_studio_app/crear.html', {'form': form})
 
-
+@login_required
 def editar_producto(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
@@ -112,10 +117,11 @@ def editar_producto(request, pk):
     
     return render(request, 'game_studio_app/editar.html', {'form': form})
 
-
+@login_required
 def eliminar_producto(request, pk):
     producto = get_object_or_404(Producto, pk=pk)
     if request.method == 'POST':
         producto.delete()
         return redirect ('listar_productos')
     return render(request, 'game_studio_app/editar.html', {'producto': producto})
+
