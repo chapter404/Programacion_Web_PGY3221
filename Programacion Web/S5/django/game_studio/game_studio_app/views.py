@@ -68,4 +68,4 @@ def listado_juegos(request):
     context = {
         'juegos' : juegos
     }
-    return render(request, 'libro/index.html', context)
+    return render(request, 'index.html', context)

@@ -22,7 +22,6 @@ class Migration(migrations.Migration):
             name='Games',
             fields=[
                 ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('codigo_isbn', models.CharField(max_length=200, unique=True)),
                 ('nombre', models.CharField(max_length=200)),
                 ('descripcion', models.TextField(blank=True, null=True)),
                 ('imagen', models.ImageField(blank=True, null=True, upload_to='inicio')),
