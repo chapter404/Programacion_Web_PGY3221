@@ -1,13 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
-from .models import Games
+from django.contrib.auth.decorators import login_required
+from .models import Producto, Usuario
+from .forms import ProductoForm
+from django.shortcuts import get_object_or_404
 
 def inicio(request):
     return render(request, 'index.html')
 
-def registro(request):
-    return render(request, 'form.html')
 
 def terror(request):
     return render(request, 'terror.html')
@@ -64,13 +65,6 @@ def crash(request):
     return render(request, 'ctr_crash.html')
 
 
-# MODIFICAR DE MOMENTO SOLO ESTOY COPIANDO LO DEL FORO
-def listado_juegos(request):
-    juegos = Games.objects.all()
-    context = {
-        'juegos': juegos
-    }
-    return render(request, 'juego/index.html', context)
 
 def registro(request):
     if request.method == 'POST':
@@ -83,4 +77,45 @@ def registro(request):
         else:
             form = UserCreationForm()
             return render(request, 'game_studio_app/registro.html', {'form': form})
+    
+
+def vista_protegida(request):
+    return render(request, 'game_studio_app/protegida.html')
+
+
+def listar_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'game_studio_app/listar.html', {'productos': productos})
+
+def crear_producto(request):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_productos')
         
+    else:
+        form = ProductoForm()
+
+    return render(request, 'game_studio_app/crear.html', {'form': form})
+
+
+def editar_producto(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect ('listar_productos')
+    else:
+        form = ProductoForm(instance=producto)
+    
+    return render(request, 'game_studio_app/editar.html', {'form': form})
+
+
+def eliminar_producto(request, pk):
+    producto = get_object_or_404(Producto, pk=pk)
+    if request.method == 'POST':
+        producto.delete()
+        return redirect ('listar_productos')
+    return render(request, 'game_studio_app/editar.html', {'producto': producto})

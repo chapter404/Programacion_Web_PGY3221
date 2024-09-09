@@ -2,6 +2,8 @@ from django.urls import path
 from .views import inicio, registro, terror, accion, mundo_abierto, free_to_play, supervivencia, carreras, silent_hill, resident_evil, cod, brawl, zelda, roblox, sims, csgo, ocean, last, mario, crash
 from . import views
 urlpatterns = [
+    path('registro/', views.registro, name='registro'),
+    path('protegida/', views.vista_protegida, name='protegida'),
     path('', inicio, name="inicio"),
     path('', views.listado_juegos, name="listado_juegos"),
     path('registro', registro, name="registro"),
