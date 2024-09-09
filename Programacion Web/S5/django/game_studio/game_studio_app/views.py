@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from .models import Games
 
 def inicio(request):
     return render(request, 'index.html')
@@ -59,3 +60,12 @@ def mario(request):
 
 def crash(request):
     return render(request, 'ctr_crash.html')
+
+
+# MODIFICAR DE MOMENTO SOLO ESTOY COPIANDO LO DEL FORO
+def listado_juegos(request):
+    juegos = Games.objects.all()
+    context = {
+        'juegos' : juegos
+    }
+    return render(request, 'index.html', context)
