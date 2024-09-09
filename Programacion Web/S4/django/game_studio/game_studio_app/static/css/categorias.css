@@ -67,7 +67,7 @@ main {
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    gap: 50px;
 }
 
 .contenedor-juego {

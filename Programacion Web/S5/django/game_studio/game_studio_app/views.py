@@ -3,12 +3,64 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.decorators import login_required
 from .models import Games
+from. forms import ProductoForm 
+
+@login_required
+def vista_protegida (request):
+    return render(request, 'GameApp/protegida.html')
 
 def inicio(request):
     return render(request, 'index.html')
 
 def registro(request):
-    return render(request, 'form.html')
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user=form.save()
+            login(request, user)
+            return redirect('index.html')
+        else:
+            form =UserCreationForm()
+            return render(request, 'form.html', {'form': form})
+        
+@login_required
+def vista_protegida (request):
+    return render(request, 'GameApp/protegida.html')
+
+def listar_productos(request):
+    productos = Producto.objects.all()
+    return render(request, 'GameApp/listar.html', {'productos': productos})
+
+
+def crear_producto(request):
+    if request.method == 'POST':
+        form = ProductoForm(request.POST)
+        if form.is_valid():
+           form.save()
+           return redirect('listar_producto')
+        else:
+            form = ProductoForm()
+        return render(request, 'GameApp/crear.html', {'form': form})
+
+def editar_producto(request, pk):
+    producto = get_object_or_404(producto, pk=pk)
+    if request.method == 'POST':
+        form = ProductoForm(request.POST, instance=producto)
+        if form.is_valid():
+            form.save()
+            return redirect('listar_producto')
+    else:
+        form =ProductoForm(instance=producto)
+    return render(request, 'GameAPP/editar.html', {'form': form})
+    
+
+def eliminar_producto(request, pk):
+    producto = get_object_or_404(producto, pk=pk)
+    if request.method == 'POST':
+            producto.delete()
+            return redirect('listar_producto')
+    return render(request, 'GameAPP/eliminar.html', {'producto': producto})
+    
 
 def terror(request):
     return render(request, 'terror.html')
