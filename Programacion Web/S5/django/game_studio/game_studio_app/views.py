@@ -10,6 +10,8 @@ import json
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
 
 
 def inicio(request):
@@ -88,19 +90,29 @@ def registrar(request):
             confirmacion_clave = data.get('confirmacion_clave')
             fecha_nacimiento = data.get('fecha_nacimiento')
 
+            if not all([nombre_real, nombre_usuario, correo, clave, confirmacion_clave, fecha_nacimiento]):
+                return JsonResponse({'success': False, 'error': 'Faltan datos obligatorios'})
+
             if clave != confirmacion_clave:
                 return JsonResponse({'success': False, 'error': 'Las contraseñas no coinciden'})
 
-            # Aquí puedes crear el nuevo usuario o procesar los datos como desees
-            # user = User.objects.create_user(nombre_usuario, correo, clave)
+            if User.objects.filter(username=nombre_usuario).exists():
+                return JsonResponse({'success': False, 'error': 'El nombre de usuario ya está en uso'})
 
-            # Respuesta exitosa
-            return JsonResponse({'success': True})
+            if User.objects.filter(email=correo).exists():
+                return JsonResponse({'success': False, 'error': 'El correo electrónico ya está registrado'})
+
+            user = User.objects.create_user(
+                username=nombre_usuario,
+                email=correo,
+                password=clave
+            )
+
+            return JsonResponse({'success': True, 'message': 'Usuario registrado exitosamente'})
 
         except json.JSONDecodeError:
-            return JsonResponse({'success': False, 'error': 'Datos inválidos'})
+            return JsonResponse({'success': False, 'error': 'Formato de datos inválido'})
     else:
-        # Si la solicitud no es POST
         return JsonResponse({'success': False, 'error': 'Método no permitido'})
 
 @login_required
