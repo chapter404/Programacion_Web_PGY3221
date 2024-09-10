@@ -6,11 +6,14 @@ from .models import Producto, Usuario
 from .forms import ProductoForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
+import json
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 
 
 def inicio(request):
     return render(request, 'index.html')
-
 
 def terror(request):
     return render(request, 'terror.html')
@@ -70,17 +73,35 @@ def home(request):
     return render(request, 'game_studio_app/home.html')
 
 def registro(request):
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home') 
-    else:
-        form = UserCreationForm()
+    return render(request, 'form.html')
 
-    # Ruta correcta para el template
-    return render(request, 'game_studio_app/registro.html', {'form': form})
+@csrf_exempt
+def registrar(request):
+    if request.method == 'POST':
+        try:
+            data = json.loads(request.body)
+
+            nombre_real = data.get('nombre_real')
+            nombre_usuario = data.get('nombre_usuario')
+            correo = data.get('correo')
+            clave = data.get('clave')
+            confirmacion_clave = data.get('confirmacion_clave')
+            fecha_nacimiento = data.get('fecha_nacimiento')
+
+            if clave != confirmacion_clave:
+                return JsonResponse({'success': False, 'error': 'Las contraseñas no coinciden'})
+
+            # Aquí puedes crear el nuevo usuario o procesar los datos como desees
+            # user = User.objects.create_user(nombre_usuario, correo, clave)
+
+            # Respuesta exitosa
+            return JsonResponse({'success': True})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Datos inválidos'})
+    else:
+        # Si la solicitud no es POST
+        return JsonResponse({'success': False, 'error': 'Método no permitido'})
 
 @login_required
 def vista_protegida(request):

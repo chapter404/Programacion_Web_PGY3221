@@ -66,9 +66,48 @@ document.addEventListener('DOMContentLoaded', function() {
             document.querySelectorAll('.text-danger').forEach(element => {
                 element.textContent = '';
             });
-            document.getElementById('formulario-registro').reset();
             document.getElementById('mensaje_error').textContent = '';
-            alert('Registro exitoso');
+
+            const csrfToken = document.querySelector('input[name="csrfmiddlewaretoken"]').value;
+
+            const formData = {
+                nombre_real: nombre_real,
+                nombre_usuario: nombre_usuario,
+                correo: correo,
+                clave: clave,
+                confirmacion_clave: confirmacion_clave,
+                fecha_nacimiento: document.getElementById('fecha_nacimiento').value,
+                csrfmiddlewaretoken: csrfToken
+            };
+
+            fetch("{% url 'registrar' %}", {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': csrfToken
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => {
+                if (response.ok) {
+                    return response.json();
+                } else {
+                    throw new Error('Error en la respuesta del servidor');
+                }
+            })
+            .then(data => {
+                if (data.success) {
+                    alert('Registro exitoso');
+                    document.getElementById('formulario-registro').reset();
+                } else {
+                    document.getElementById('mensaje_error').textContent = data.error || 'Error en el registro';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('mensaje_error').textContent = 'Error al enviar los datos';
+            });
+
         } else {
             document.getElementById('mensaje_error').textContent = 'Por favor, corrija el formulario';
         }

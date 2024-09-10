@@ -13,8 +13,11 @@
 <body>
     <div class="container mt-3">
         <div class="row justify-content-center">
-            <form id="formulario-registro" class="col-12 col-md-8 col-lg-5">
+            <form id="formulario-registro" class="col-12 col-md-8 col-lg-5" method="POST" action="{% url 'registro' %}">
+                <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
                 <h2 class="text-center mb-4">Registro</h2>
+
                 <div class="mb-2">
                     <label for="nombre" class="form-label">Nombre</label>
                     <input type="text" class="form-control" id="nombre_real" placeholder="Ingrese su nombre completo" required>
