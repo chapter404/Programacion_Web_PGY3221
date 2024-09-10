@@ -6,11 +6,16 @@ from .models import Producto, Usuario
 from .forms import ProductoForm
 from django.shortcuts import get_object_or_404
 from django.http import HttpResponse
+import json
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth.models import User
+
 
 
 def inicio(request):
     return render(request, 'index.html')
-
 
 def terror(request):
     return render(request, 'terror.html')
@@ -70,15 +75,45 @@ def home(request):
     return render(request, 'game_studio_app/home.html')
 
 def registro(request):
+    return render(request, 'form.html')
+
+@csrf_exempt
+def registrar(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home') 
+        try:
+            data = json.loads(request.body)
+
+            nombre_real = data.get('nombre_real')
+            nombre_usuario = data.get('nombre_usuario')
+            correo = data.get('correo')
+            clave = data.get('clave')
+            confirmacion_clave = data.get('confirmacion_clave')
+            fecha_nacimiento = data.get('fecha_nacimiento')
+
+            if not all([nombre_real, nombre_usuario, correo, clave, confirmacion_clave, fecha_nacimiento]):
+                return JsonResponse({'success': False, 'error': 'Faltan datos obligatorios'})
+
+            if clave != confirmacion_clave:
+                return JsonResponse({'success': False, 'error': 'Las contraseñas no coinciden'})
+
+            if User.objects.filter(username=nombre_usuario).exists():
+                return JsonResponse({'success': False, 'error': 'El nombre de usuario ya está en uso'})
+
+            if User.objects.filter(email=correo).exists():
+                return JsonResponse({'success': False, 'error': 'El correo electrónico ya está registrado'})
+
+            user = User.objects.create_user(
+                username=nombre_usuario,
+                email=correo,
+                password=clave
+            )
+
+            return JsonResponse({'success': True, 'message': 'Usuario registrado exitosamente'})
+
+        except json.JSONDecodeError:
+            return JsonResponse({'success': False, 'error': 'Formato de datos inválido'})
     else:
-        form = UserCreationForm()
-    return render(request, 'game_studio_app/registro.html', {'form': form})
+        return JsonResponse({'success': False, 'error': 'Método no permitido'})
 
 @login_required
 def vista_protegida(request):
@@ -122,5 +157,4 @@ def eliminar_producto(request, pk):
         producto.delete()
         return redirect ('listar_productos')
     return render(request, 'game_studio_app/editar.html', {'producto': producto})
-
 
