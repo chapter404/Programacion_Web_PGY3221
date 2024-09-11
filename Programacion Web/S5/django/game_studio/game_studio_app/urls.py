@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
+from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
@@ -24,6 +25,7 @@ urlpatterns = [
     path('crash', views.crash, name="crash"),
     path('registro', views.registro, name="registro"),
     path('registrar', views.registrar, name="registrar"),
-    path('login/', auth_views.LoginView.as_view(template_name='game_studio_app/login.html'), name='iniciar_sesion'),
-    path('logout/', auth_views.LogoutView.as_view(), name='logout'),
+    path('iniciar_sesion/', auth_views.LoginView.as_view(template_name='game_studio_app/iniciar_sesion.html'), name='iniciar_sesion'),
+    path('cerrar_sesion/', LogoutView.as_view(), name='cerrar_sesion'),
+    path('panel_usuario/', views.panel_usuario, name='panel_usuario'),
 ]

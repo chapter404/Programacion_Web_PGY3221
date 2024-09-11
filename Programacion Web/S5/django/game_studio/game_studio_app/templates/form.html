@@ -12,19 +12,18 @@
 </head>
 <body>
     {% block content %}
-    {% if messages %}
     <div class="container mt-3">
-        {% for message in messages %}
-            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                {{ message }}
-                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-            </div>
-        {% endfor %}
-    {% endif %}
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+            {% endfor %}
+        {% endif %}
         <div class="row justify-content-center">
             <form id="formulario-registro" class="col-12 col-md-8 col-lg-5" method="POST" action="{% url 'registrar' %}">
                 {% csrf_token %}
-                {{ form.as_p }}
 
                 <h2 class="text-center mb-4">Registro</h2>
 

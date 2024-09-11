@@ -1,10 +1,12 @@
-from django.shortcuts import render, redirect
-from django.contrib import messages
-from django.contrib.auth import login, authenticate
-from django.views.decorators.csrf import csrf_exempt
 from .forms import UsuarioForm, LoginForm
 from .models import Usuario
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 def inicio(request):
     return render(request, 'index.html')
@@ -94,12 +96,16 @@ def iniciar_sesion(request):
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
             if user is not None:
-                login(request, user)
                 messages.success(request, 'Inicio de sesión exitoso.')
+                login(request, user)
                 return redirect('inicio')
             else:
                 messages.error(request, 'Nombre de usuario o clave incorrectos.')
     else:
         form = LoginForm()
 
-    return render(request, 'game_studio_app/login.html', {'form': form})
+    return render(request, 'game_studio_app/iniciar_sesion.html', {'form': form})
+
+@login_required
+def panel_usuario(request):
+    return render(request, 'game_studio_app/panel_usuario.html')

@@ -107,8 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-# AUTH_USER_MODEL = 'game_studio_app.Usuario'
-
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
 
@@ -135,6 +133,8 @@ MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
-LOGIN_REDIRECT_URL = 'inicio' 
+LOGIN_URL = 'iniciar_sesion'
+LOGIN_REDIRECT_URL = 'panel_usuario'
+LOGOUT_REDIRECT_URL = 'inicio'
 
 
