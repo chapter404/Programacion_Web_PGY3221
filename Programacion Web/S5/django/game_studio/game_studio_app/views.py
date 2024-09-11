@@ -1,18 +1,10 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
+from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.decorators import login_required
-from .models import Producto, Usuario
-from .forms import ProductoForm
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponse
-import json
-from django.http import JsonResponse
-from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from .forms import UsuarioForm, LoginForm
+from .models import Usuario
 from django.contrib.auth.models import User
-
-
 
 def inicio(request):
     return render(request, 'index.html')
@@ -71,90 +63,43 @@ def mario(request):
 def crash(request):
     return render(request, 'ctr_crash.html')
 
-def home(request):
-    return render(request, 'game_studio_app/home.html')
-
 def registro(request):
     return render(request, 'form.html')
 
 @csrf_exempt
 def registrar(request):
     if request.method == 'POST':
-        try:
-            data = json.loads(request.body)
-
-            nombre_real = data.get('nombre_real')
-            nombre_usuario = data.get('nombre_usuario')
-            correo = data.get('correo')
-            clave = data.get('clave')
-            confirmacion_clave = data.get('confirmacion_clave')
-            fecha_nacimiento = data.get('fecha_nacimiento')
-
-            if not all([nombre_real, nombre_usuario, correo, clave, confirmacion_clave, fecha_nacimiento]):
-                return JsonResponse({'success': False, 'error': 'Faltan datos obligatorios'})
-
-            if clave != confirmacion_clave:
-                return JsonResponse({'success': False, 'error': 'Las contraseñas no coinciden'})
-
-            if User.objects.filter(username=nombre_usuario).exists():
-                return JsonResponse({'success': False, 'error': 'El nombre de usuario ya está en uso'})
-
-            if User.objects.filter(email=correo).exists():
-                return JsonResponse({'success': False, 'error': 'El correo electrónico ya está registrado'})
-
-            user = User.objects.create_user(
-                username=nombre_usuario,
-                email=correo,
-                password=clave
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            User.objects.create_user(
+                username=usuario.nombre_usuario,
+                email=usuario.correo,
+                password=usuario.clave
             )
-
-            return JsonResponse({'success': True, 'message': 'Usuario registrado exitosamente'})
-
-        except json.JSONDecodeError:
-            return JsonResponse({'success': False, 'error': 'Formato de datos inválido'})
+            messages.success(request, 'Registro exitoso')
+            return redirect('iniciar_sesion')
+        else:
+            messages.error(request, 'Por favor, corrija los errores del formulario')
     else:
-        return JsonResponse({'success': False, 'error': 'Método no permitido'})
+        form = UsuarioForm()
 
-@login_required
-def vista_protegida(request):
-    return render(request, 'game_studio_app/protegida.html')
+    return render(request, 'form.html', {'form': form})
 
-@login_required
-def listar_productos(request):
-    productos = Producto.objects.all()
-    return render(request, 'game_studio_app/listar.html', {'productos': productos})
-
-@login_required
-def crear_producto(request):
+def iniciar_sesion(request):
     if request.method == 'POST':
-        form = ProductoForm(request.POST)
+        form = LoginForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect('listar_productos')
-        
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                messages.success(request, 'Inicio de sesión exitoso.')
+                return redirect('inicio')
+            else:
+                messages.error(request, 'Nombre de usuario o clave incorrectos.')
     else:
-        form = ProductoForm()
+        form = LoginForm()
 
-    return render(request, 'game_studio_app/crear.html', {'form': form})
-
-@login_required
-def editar_producto(request, pk):
-    producto = get_object_or_404(Producto, pk=pk)
-    if request.method == 'POST':
-        form = ProductoForm(request.POST, instance=producto)
-        if form.is_valid():
-            form.save()
-            return redirect ('listar_productos')
-    else:
-        form = ProductoForm(instance=producto)
-    
-    return render(request, 'game_studio_app/editar.html', {'form': form})
-
-@login_required
-def eliminar_producto(request, pk):
-    producto = get_object_or_404(Producto, pk=pk)
-    if request.method == 'POST':
-        producto.delete()
-        return redirect ('listar_productos')
-    return render(request, 'game_studio_app/editar.html', {'producto': producto})
-
+    return render(request, 'game_studio_app/login.html', {'form': form})
