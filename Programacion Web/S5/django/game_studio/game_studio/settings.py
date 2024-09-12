@@ -13,17 +13,6 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from pathlib import Path
 import os
 
-
-
-
-
-LOGIN_URL = 'login'
-LOGIN_REDIRECT_URL = 'listar_productos'
-LOGOUT_REDIRECT_URL = 'home'
-
-
-
-
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -93,8 +82,8 @@ DATABASES = {
         'USER': 'ADMIN',
         'PASSWORD': 'Oracle123456',
         'OPTIONS': {
-            'config_dir': r'C:\Users\aliag\Desktop\codigo\Wallet_BDGenerica2024',
-            'wallet_location': r'C:\Users\aliag\Desktop\codigo\Wallet_BDGenerica2024',
+            'config_dir': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
+            'wallet_location': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
             'wallet_password': 'Oracle123456',
         }
     }
@@ -118,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
-
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
@@ -144,3 +132,10 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'game_studio_app/static'), )
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+
+LOGIN_URL = 'iniciar_sesion'
+LOGIN_REDIRECT_URL = 'panel_usuario'
+LOGOUT_REDIRECT_URL = 'inicio'
+
+
