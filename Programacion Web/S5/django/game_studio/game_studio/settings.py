@@ -64,7 +64,6 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-
             ],
         },
     },
@@ -82,8 +81,21 @@ DATABASES = {
         'USER': 'ADMIN',
         'PASSWORD': 'Oracle123456',
         'OPTIONS': {
-            'config_dir': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
-            'wallet_location': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
+            'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+            'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+            'wallet_password': 'Oracle123456',
+        }
+    }
+}
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.oracle',
+        'NAME': 'bdgenerica2024_high',
+        'USER': 'ADMIN',
+        'PASSWORD': 'Oracle123456',
+        'OPTIONS': {
+            'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+            'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
             'wallet_password': 'Oracle123456',
         }
     }

@@ -23,5 +23,5 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('game_studio_app.urls')),
-    path('', lambda request: redirect('home'))
+    path('', lambda request: redirect(''))
 ] 
