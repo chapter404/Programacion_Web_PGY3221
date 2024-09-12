@@ -1,10 +1,15 @@
-from django.shortcuts import render
+from .forms import UsuarioForm, LoginForm
+from .models import Usuario
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
+
 
 def inicio(request):
     return render(request, 'index.html')
-
-def registro(request):
-    return render(request, 'form.html')
 
 def terror(request):
     return render(request, 'terror.html')
@@ -59,3 +64,48 @@ def mario(request):
 
 def crash(request):
     return render(request, 'ctr_crash.html')
+
+def registro(request):
+    return render(request, 'form.html')
+
+@csrf_exempt
+def registrar(request):
+    if request.method == 'POST':
+        form = UsuarioForm(request.POST)
+        if form.is_valid():
+            usuario = form.save()
+            User.objects.create_user(
+                username=usuario.nombre_usuario,
+                email=usuario.correo,
+                password=usuario.clave
+            )
+            messages.success(request, 'Registro exitoso')
+            return redirect('iniciar_sesion')
+        else:
+            messages.error(request, 'Por favor, corrija los errores del formulario')
+    else:
+        form = UsuarioForm()
+
+    return render(request, 'form.html', {'form': form})
+
+def iniciar_sesion(request):
+    if request.method == 'POST':
+        form = LoginForm(request.POST)
+        if form.is_valid():
+            username = form.cleaned_data['username']
+            password = form.cleaned_data['password']
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                messages.success(request, 'Inicio de sesión exitoso.')
+                login(request, user)
+                return redirect('inicio')
+            else:
+                messages.error(request, 'Nombre de usuario o clave incorrectos.')
+    else:
+        form = LoginForm()
+
+    return render(request, 'game_studio_app/iniciar_sesion.html', {'form': form})
+
+@login_required
+def panel_usuario(request):
+    return render(request, 'game_studio_app/panel_usuario.html')
