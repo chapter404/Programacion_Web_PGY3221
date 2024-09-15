@@ -27,6 +27,6 @@ urlpatterns = [
     path('registro', views.registro, name="registro"),
     path('registrar', views.registrar, name="registrar"),
     path('iniciar_sesion', views.iniciar_sesion, name='iniciar_sesion'),
-    path('cerrar_sesion/', LogoutView.as_view(), name='cerrar_sesion'),
+    path('cerrar_sesion/', LogoutView.as_view(next_page='iniciar_sesion'), name='cerrar_sesion'),
     path('panel_usuario/', views.panel_usuario, name='panel_usuario'),
 ]

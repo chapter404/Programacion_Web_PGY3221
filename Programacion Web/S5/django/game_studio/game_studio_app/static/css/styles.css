@@ -5,9 +5,22 @@ html, body {
     overflow-x: hidden;
 }
 
-.barra-navegacion-personalizada {
+.barra-navegacion {
     height: 50px;
     background-color: rgb(224, 166, 4);
+    padding: 0 15px;
+}
+
+.barra-navegacion div {
+    margin-left: auto;
+}
+
+.barra-navegacion a {
+    margin-left: 20px;
+}
+
+.barra-navegacion form {
+    display: inline;
 }
 
 .contenedor-principal {
@@ -90,4 +103,16 @@ nav a {
 
 a img:hover {
     border: 3px solid rgb(224, 166, 4);
+}
+
+.alert {
+    background-color: #4F4F4F;
+    color: white;
+    border: 3px solid #fbc02d;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #fbc02d;
+}
+
+.alert .btn-close {
+    color: white;
 }
