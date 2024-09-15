@@ -134,7 +134,27 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 LOGIN_URL = 'iniciar_sesion'
-LOGIN_REDIRECT_URL = 'panel_usuario'
+# LOGIN_REDIRECT_URL = 'panel_usuario'
 LOGOUT_REDIRECT_URL = 'inicio'
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'game_studio_app': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}
+
+
 
 

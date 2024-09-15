@@ -1,11 +1,16 @@
+from django.urls import reverse
 from .forms import UsuarioForm, LoginForm
-from .models import Usuario
+from .models import Perfil, Usuario
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+import logging
+
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('game')
 
 
 def inicio(request):
@@ -68,6 +73,9 @@ def crash(request):
 def registro(request):
     return render(request, 'form.html')
 
+def panel_inicio_sesion(request):
+    return render(request, 'game_studio_app/panel_inicio_sesion.html')
+
 @csrf_exempt
 def registrar(request):
     if request.method == 'POST':
@@ -88,24 +96,40 @@ def registrar(request):
 
     return render(request, 'form.html', {'form': form})
 
+
 def iniciar_sesion(request):
+    logger.debug('Este es un mensaje DEBUG')
+    logger.info('Este es un mensaje INFO')
+    logger.warning('Este es un mensaje WARNING')
+    logger.error('Este es un mensaje ERROR')
+    logger.critical('Este es un mensaje CRITICAL')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
             username = form.cleaned_data['username']
             password = form.cleaned_data['password']
             user = authenticate(request, username=username, password=password)
+            logger.debug('Formulario Correcto')
+
             if user is not None:
-                messages.success(request, 'Inicio de sesión exitoso.')
                 login(request, user)
-                return redirect('inicio')
+                logger.debug('Usuario autenticado')
+
+                if user.is_superuser:
+                    logger.debug('Usuario es superusuario')
+                    return redirect(reverse('admin:index'))
+                logger.debug('Usuario no es superusuario')
+                return redirect('panel_usuario')
             else:
                 messages.error(request, 'Nombre de usuario o clave incorrectos.')
+
     else:
         form = LoginForm()
 
     return render(request, 'game_studio_app/iniciar_sesion.html', {'form': form})
 
+
 @login_required
 def panel_usuario(request):
-    return render(request, 'game_studio_app/panel_usuario.html')
+    perfil = Perfil.objects.get(user=request.user)
+    return render(request, 'game_studio_app/panel_usuario.html', {'perfil': perfil})

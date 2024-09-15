@@ -15,16 +15,23 @@
             <div class="col-12 col-md-8 col-lg-5" id="panel-usuario">
                 <h2 class="text-center mb-4">Bienvenido al Panel de Usuario, {{ user.username }}!</h2>
                 <p class="text-center">Aquí puedes gestionar tu cuenta y ver tus actividades.</p>
+
+                <div class="mt-4">
+                    <h4 class="text-center">Información de Perfil</h4>
+                    <ul class="list-group mt-3">
+                        <li class="list-group-item"><strong>Nombre Real:</strong> {{ perfil.nombre_real }}</li>
+                        <li class="list-group-item"><strong>Correo Electrónico:</strong> {{ user.email }}</li>
+                        <li class="list-group-item"><strong>Dirección de Despacho:</strong> {{ perfil.direccion_despacho }}</li>
+                        <li class="list-group-item"><strong>Fecha de Nacimiento:</strong> {{ perfil.fecha_nacimiento }}</li>
+                    </ul>
+                </div>
+
                 <div class="text-center mt-4">
                     {% if user.is_authenticated %}
                     <form method="POST" action="{% url 'cerrar_sesion' %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary mt-3">Cerrar Sesión</button>
                     </form>
-                
-                    {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{% url 'iniciar_sesion' %}">Iniciar Sesión</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{% url 'registro' %}">Registrarse</a></li>
                     {% endif %}
                 </div>
             </div>

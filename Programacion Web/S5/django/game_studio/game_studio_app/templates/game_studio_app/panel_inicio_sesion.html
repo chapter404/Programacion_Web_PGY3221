@@ -25,7 +25,7 @@
                 {% endif %}
                 {% endblock %}
 
-                <form id="formulario-login" method="POST">
+                <form id="formulario-login" method="POST" action="{% url 'iniciar_sesion' %}">
                     {% csrf_token %}
                     
                     <div class="mb-2">
@@ -43,6 +43,5 @@
             </div>
         </div>
     </div>
-    <script src="{% static 'js/form.js' %}"></script>
 </body>
 </html>
