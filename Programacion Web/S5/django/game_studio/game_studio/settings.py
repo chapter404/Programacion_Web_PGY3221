@@ -74,6 +74,7 @@ WSGI_APPLICATION = 'game_studio.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
@@ -81,25 +82,26 @@ DATABASES = {
         'USER': 'ADMIN',
         'PASSWORD': 'Oracle123456',
         'OPTIONS': {
-            'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
-            'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+            'config_dir': r'/Users/ignacioms/wallets/Wallet_bdgenerica2024',
+            'wallet_location': r'/Users/ignacioms/wallets/Wallet_bdgenerica2024',
             'wallet_password': 'Oracle123456',
         }
     }
 }
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'bdgenerica2024_high',
-        'USER': 'ADMIN',
-        'PASSWORD': 'Oracle123456',
-        'OPTIONS': {
-            'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
-            'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
-            'wallet_password': 'Oracle123456',
-        }
-    }
-}
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.oracle',
+#         'NAME': 'bdgenerica2024_high',
+#         'USER': 'ADMIN',
+#         'PASSWORD': 'Oracle123456',
+#         'OPTIONS': {
+#             'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+#             'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+#             'wallet_password': 'Oracle123456',
+#         }
+#     }
+# }
 
 
 # Password validation
