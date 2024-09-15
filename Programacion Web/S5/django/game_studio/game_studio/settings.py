@@ -147,7 +147,7 @@ LOGGING = {
         },
     },
     'loggers': {
-        'game_studio_app': {
+        'game': {
             'handlers': ['console'],
             'level': 'DEBUG',
             'propagate': False,

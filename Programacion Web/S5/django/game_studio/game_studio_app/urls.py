@@ -26,7 +26,6 @@ urlpatterns = [
     path('crash', views.crash, name="crash"),
     path('registro', views.registro, name="registro"),
     path('registrar', views.registrar, name="registrar"),
-    path('panel_inicio_sesion', views.panel_inicio_sesion, name='panel_inicio_sesion'),
     path('iniciar_sesion', views.iniciar_sesion, name='iniciar_sesion'),
     path('cerrar_sesion/', LogoutView.as_view(), name='cerrar_sesion'),
     path('panel_usuario/', views.panel_usuario, name='panel_usuario'),

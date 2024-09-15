@@ -1,6 +1,6 @@
 from django.urls import reverse
 from .forms import UsuarioForm, LoginForm
-from .models import Perfil, Usuario
+from .models import Usuario
 from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
@@ -81,12 +81,14 @@ def registrar(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
         if form.is_valid():
-            usuario = form.save()
-            User.objects.create_user(
-                username=usuario.nombre_usuario,
-                email=usuario.correo,
-                password=usuario.clave
+            user = User.objects.create_user(
+                username=form.cleaned_data['nombre_usuario'],
+                email=form.cleaned_data['correo'],
+                password=form.cleaned_data['clave']
             )
+            usuario = form.save(commit=False)  
+            usuario.user = user
+            usuario.save()
             messages.success(request, 'Registro exitoso')
             return redirect('iniciar_sesion')
         else:
@@ -126,10 +128,10 @@ def iniciar_sesion(request):
     else:
         form = LoginForm()
 
-    return render(request, 'game_studio_app/iniciar_sesion.html', {'form': form})
+    return render(request, 'game_studio_app/panel_inicio_sesion.html', {'form': form})
 
 
 @login_required
 def panel_usuario(request):
-    perfil = Perfil.objects.get(user=request.user)
-    return render(request, 'game_studio_app/panel_usuario.html', {'perfil': perfil})
+    usuario = Usuario.objects.get(user=request.user)
+    return render(request, 'game_studio_app/panel_usuario.html', {'usuario': usuario})
