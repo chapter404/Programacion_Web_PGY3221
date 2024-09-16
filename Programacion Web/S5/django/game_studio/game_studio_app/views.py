@@ -224,3 +224,28 @@ def eliminar_categoria(request, categoria_id):
 def mostrar_categorias(request):
     categorias = Categoria.objects.all()
     return render(request, 'administrar_juegos/mostrar_categorias.html', {'categorias': categorias})
+
+
+
+def modificar_perfil(request):
+    usuario = request.user.usuario  # Suponiendo que tienes un modelo extendido para el perfil del usuario
+    if request.method == 'POST':
+        # Obtener los datos enviados desde el formulario
+        nombre_real = request.POST.get('nombre_real')
+        correo = request.POST.get('correo')
+        direccion_despacho = request.POST.get('direccion_despacho')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+
+        # Actualizar los datos del perfil
+        usuario.nombre_real = nombre_real
+        usuario.correo = correo
+        usuario.direccion_despacho = direccion_despacho
+        usuario.fecha_nacimiento = fecha_nacimiento
+        usuario.save()
+
+        # Mensaje de éxito
+        messages.success(request, 'Perfil actualizado correctamente.')
+        return redirect('panel_usuario')
+
+    # Si no es POST, mostrar el formulario
+    return render(request, 'panel_usuario.html', {'usuario': usuario})
