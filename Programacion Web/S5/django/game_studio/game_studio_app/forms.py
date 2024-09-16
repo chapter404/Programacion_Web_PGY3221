@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Usuario
+from .models import Usuario, Juego, Categoria
 
 class UsuarioForm(forms.ModelForm):
     clave = forms.CharField(label='Clave', widget=forms.PasswordInput)
@@ -24,3 +24,14 @@ class UsuarioForm(forms.ModelForm):
 class LoginForm(forms.Form):
     username = forms.CharField(label='Nombre de Usuario', max_length=100)
     password = forms.CharField(label='Clave de Ingreso', widget=forms.PasswordInput)
+
+
+class JuegoForm(forms.ModelForm):
+    class Meta:
+        model = Juego
+        fields = ['titulo_juego', 'categoria_juego', 'precio_juego', 'descripcion_juego', 'imagen_juego']
+        widgets = {
+            'categoria_juego': forms.Select(),
+            'precio_juego': forms.NumberInput(attrs={'step': '0.01'}),
+            'descripcion_juego': forms.Textarea(attrs={'rows': 4}),
+        }
