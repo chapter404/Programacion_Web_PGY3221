@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carrito de Compras</title>
+    <link rel="stylesheet" href="{% static 'css/carrito.css' %}">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Carrito de Compras</h1>
+
+        <!-- Producto 1 -->
+        <div class="product">
+            <img src="{% static 'images/producto1.jpg' %}" alt="Producto 1">
+            <div class="product-info">
+                <h2>Producto 1</h2>
+                <p>Descripción del producto 1.</p>
+            </div>
+            <div class="product-price">$10.00</div>
+            <div class="product-quantity">
+                <input type="number" value="1" min="1" class="quantity" data-price="10.00">
+            </div>
+            <div class="product-total">$10.00</div>
+        </div>
+
+        <!-- Producto 2 -->
+        <div class="product">
+            <img src="{% static 'images/producto2.jpg' %}" alt="Producto 2">
+            <div class="product-info">
+                <h2>Producto 2</h2>
+                <p>Descripción del producto 2.</p>
+            </div>
+            <div class="product-price">$15.00</div>
+            <div class="product-quantity">
+                <input type="number" value="1" min="1" class="quantity" data-price="15.00">
+            </div>
+            <div class="product-total">$15.00</div>
+        </div>
+
+        <!-- Precio total -->
+        <div class="total-price">
+            Total: $25.00
+        </div>
+
+        <!-- Botones -->
+        <div class="checkout-buttons">
+            <a href="{% url 'index' %}" class="btn-back">Volver al inicio</a>
+            <button class="btn-pay">Proceder al pago</button>
+        </div>
+    </div>
+
+    <script>
+        // Función para actualizar el total cuando se cambia la cantidad
+        const quantityInputs = document.querySelectorAll('.quantity');
+        const totalPriceElement = document.querySelector('.total-price');
+
+        quantityInputs.forEach(input => {
+            input.addEventListener('input', () => {
+                let total = 0;
+                quantityInputs.forEach(item => {
+                    const price = parseFloat(item.getAttribute('data-price'));
+                    const quantity = parseInt(item.value);
+                    total += price * quantity;
+                });
+                totalPriceElement.textContent = `Total: $${total.toFixed(2)}`;
+            });
+        });
+    </script>
+    
+</body>
+</html>

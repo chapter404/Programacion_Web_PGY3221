@@ -19,9 +19,15 @@ from django.urls import path, include
 from django.shortcuts import redirect
 from django.conf import settings
 from django.conf.urls.static import static
-
+from django.urls import path
+from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('game_studio_app.urls')),
-    path('', lambda request: redirect(''))
+    path('', lambda request: redirect('')),
+    path('', views.index, name='index'),
+    path('carrito/', views.carrito, name='carrito')
 ] 
+
+
+

@@ -7,6 +7,7 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.shortcuts import render
 import logging
 
 logging.basicConfig(level=logging.DEBUG)
@@ -135,3 +136,12 @@ def iniciar_sesion(request):
 def panel_usuario(request):
     usuario = Usuario.objects.get(user=request.user)
     return render(request, 'game_studio_app/panel_usuario.html', {'usuario': usuario})
+
+
+
+
+def index(request):
+    return render(request, 'my_app/index.html')
+
+def carrito(request):
+    return render(request, 'my_app/carrito.html')

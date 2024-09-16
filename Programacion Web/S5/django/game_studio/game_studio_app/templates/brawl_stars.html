@@ -32,9 +32,23 @@
                 <div class="precio-juego">
                     CLP$ 45.000
                 </div>
-                <div class="text-center">
-                    <button class="boton-amarillo">Añadir al carrito</button>
+                
+                <div class="container">
+                    <h1>Tienda en Línea</h1>
+                    
+                                      
+                    <div class="text-center">
+                        <a href="{% url 'carrito' %}" class="btn-cart">Añadir a Carrito</a>
+                    </div>
                 </div>
+            
+               
+                <div class="cart-icon">
+                    <a href="{% url 'carrito' %}">
+                        <img src="{% static 'images/carrito-icono.png' %}" alt="Carrito">
+                    </a>
+                </div>
+            
                 <div class="text-center mt-3">
                     <a href="{% url 'accion' %}" class="btn btn-secondary">Volver a acción</a>
                 </div>
