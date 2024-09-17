@@ -1,219 +1,26 @@
-/* General Reset */
-* {
-    margin: 0;
-    padding: 0;
+.carrito-container {
+    position: relative;
 }
 
-html, body {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    font-family: "Montserrat", sans-serif;
-    background-color: #f8f9fa;
-}
-
-/* Main Container */
-.container-fluid {
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
-/* Sidebar */
-aside {
-    background: #fbc02d;
-    padding: 30px;
-    color: white;
-    border-right: 2px solid black;
-}
-
-/* Main Section */
-main {
-    background: url("../imagenes/fondo3.webp");
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    padding: 20px;
-}
-
-/* Carrito Container */
-.container {
-    width: 80%;
-    margin: 0 auto;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-}
-
-/* Headings */
-h1 {
-    text-align: center;
-    color: #333;
-}
-
-/* Product Card */
-.product {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-    padding: 10px 0;
-}
-
-.product img {
-    width: 100px;
-    height: 100px;
-    object-fit: cover;
-    border-radius: 8px;
-}
-
-.product-info {
-    flex: 1;
-    padding: 0 20px;
-}
-
-.product-info h2 {
-    margin: 0;
-    font-size: 1.2em;
-    color: #333;
-}
-
-.product-info p {
-    color: #666;
-    font-size: 0.9em;
-}
-
-/* Price and Quantity */
-.product-price, .product-quantity, .product-total {
-    width: 150px;
-    text-align: right;
-    font-size: 1em;
-    color: #333;
-}
-
-.product-price {
-    font-weight: bold;
-    color: #28a745;
-}
-
-input[type="number"] {
-    width: 60px;
-    padding: 5px;
-    font-size: 1em;
-    text-align: center;
-    border: 1px solid #ccc;
+.carrito-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 200px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 4px;
+    z-index: 1000;
+    padding: 10px;
 }
 
-/* Total Price */
-.total-price {
-    text-align: right;
-    font-size: 1.5em;
-    font-weight: bold;
-    margin-top: 20px;
-    color: #333;
+.carrito-container:hover .carrito-dropdown {
+    display: block;
 }
 
-/* Checkout Buttons */
-.checkout-buttons {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-}
-
-.btn-back, .btn-pay {
-    padding: 10px 20px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1em;
-}
-
-.btn-back {
-    background-color: #007bff;
-    color: white;
-    text-decoration: none;
-}
-
-.btn-back:hover {
-    background-color: #0056b3;
-}
-
-.btn-pay {
-    background-color: #28a745;
-    color: white;
-}
-
-.btn-pay:hover {
-    background-color: #218838;
-}
-
-/* Game Grid */
-.contenedor-main {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    gap: 20px;
-}
-
-.contenedor-juego {
-    width: 300px;
-    text-align: center;
-    font-size: 15px;
-}
-
-/* Game Image */
-.contenedor-imagen {
-    width: 100%;
-    height: 250px;
-    overflow: hidden;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.contenedor-imagen img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: filter 0.3s;
-    border-radius: 20px;
-}
-
-.contenedor-imagen img:hover {
-    border: #fbc02d 4px solid;
-}
-
-/* Info Text */
-.info {
-    margin-top: 10px;
-}
-
-.info p {
+.carrito-dropdown p {
     margin: 0;
-    color: white;
-}
-
-/* Other General Styles */
-a {
-    text-decoration: none;
-}
-
-ul {
-    list-style: none;
-}
-
-/* Search Bar */
-.busqueda {
-    border: 3px solid #fbc02d;
-    border-radius: 10px;
-}
-
-.row {
-    flex: 1;
-    display: flex;
-    height: 100%;
+    font-size: 14px;
+    color: #555;
 }

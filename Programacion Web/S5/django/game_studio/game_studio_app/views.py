@@ -226,5 +226,46 @@ def mostrar_categorias(request):
     return render(request, 'administrar_juegos/mostrar_categorias.html', {'categorias': categorias})
 
 
-def carrito(request):
-    return render(request, 'carrito.html')
+
+def modificar_perfil(request):
+    usuario = request.user.usuario  # Suponiendo que tienes un modelo extendido para el perfil del usuario
+    if request.method == 'POST':
+        # Obtener los datos enviados desde el formulario
+        nombre_real = request.POST.get('nombre_real')
+        correo = request.POST.get('correo')
+        direccion_despacho = request.POST.get('direccion_despacho')
+        fecha_nacimiento = request.POST.get('fecha_nacimiento')
+
+        # Actualizar los datos del perfil
+        usuario.nombre_real = nombre_real
+        usuario.correo = correo
+        usuario.direccion_despacho = direccion_despacho
+        usuario.fecha_nacimiento = fecha_nacimiento
+        usuario.save()
+
+        # Mensaje de éxito
+        messages.success(request, 'Perfil actualizado correctamente.')
+        return redirect('panel_usuario')
+
+    # Si no es POST, mostrar el formulario
+    return render(request, 'panel_usuario.html', {'usuario': usuario})
+
+
+def ver_carrito(request):
+    carrito = request.session.get('carrito', [])  # Suponiendo que guardas el carrito en la sesión
+    total_carrito = sum(item['precio'] * item['cantidad'] for item in carrito)
+    
+    return render(request, 'carrito.html', {
+        'carrito': carrito,
+        'total_carrito': total_carrito,
+    })
+
+
+def eliminar_del_carrito(request, producto_id):
+    carrito = request.session.get('carrito', [])
+
+    carrito = [item for item in carrito if item['producto_id'] != producto_id]
+
+    request.session['carrito'] = carrito
+
+    return redirect('ver_carrito')
