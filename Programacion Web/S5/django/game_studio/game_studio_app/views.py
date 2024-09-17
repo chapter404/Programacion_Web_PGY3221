@@ -249,3 +249,23 @@ def modificar_perfil(request):
 
     # Si no es POST, mostrar el formulario
     return render(request, 'panel_usuario.html', {'usuario': usuario})
+
+
+def ver_carrito(request):
+    carrito = request.session.get('carrito', [])  # Suponiendo que guardas el carrito en la sesión
+    total_carrito = sum(item['precio'] * item['cantidad'] for item in carrito)
+    
+    return render(request, 'carrito.html', {
+        'carrito': carrito,
+        'total_carrito': total_carrito,
+    })
+
+
+def eliminar_del_carrito(request, producto_id):
+    carrito = request.session.get('carrito', [])
+
+    carrito = [item for item in carrito if item['producto_id'] != producto_id]
+
+    request.session['carrito'] = carrito
+
+    return redirect('ver_carrito')

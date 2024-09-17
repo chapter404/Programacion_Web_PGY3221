@@ -40,4 +40,6 @@ urlpatterns = [
     path('editar_categoria/<int:categoria_id>/', views.editar_categoria, name='editar_categoria'),
     path('eliminar_categoria/<int:categoria_id>/', views.eliminar_categoria, name='eliminar_categoria'),
     path('modificar_perfil/', views.modificar_perfil, name='modificar_perfil'),
+    path('carrito/', views.ver_carrito, name='ver_carrito'),  # Ruta para ver el carrito
+    # path('carrito/eliminar/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),  # Ruta para eliminar un producto del carrito
 ]
