@@ -258,7 +258,45 @@ def ver_carrito(request):
 
 def eliminar_del_carrito(request, producto_id):
     carrito = request.session.get('carrito', [])
-    carrito = [item for item in carrito if item['producto_id'] != producto_id]
+
+    carrito = [item for item in carrito if item['producto']['id'] != producto_id]
+
     request.session['carrito'] = carrito
     
     return redirect('ver_carrito')
+
+def agregar_carrito(request, juego_id):
+    juego = get_object_or_404(Juego, id=juego_id)
+
+    carrito = request.session.get('carrito', [])
+
+    juego_en_carrito = next((item for item in carrito if item['producto']['id'] == juego.id), None)
+
+    if juego_en_carrito:
+        juego_en_carrito['cantidad'] += 1
+    else:
+        carrito.append({
+            'producto': {
+                'id': juego.id,
+                'nombre': juego.titulo_juego,
+                'precio': float(juego.precio_juego),
+                'imagen': juego.imagen_juego.url if juego.imagen_juego else None
+            },
+            'cantidad': 1
+        })
+
+    request.session['carrito'] = carrito
+
+    return redirect('ver_carrito')
+
+def ver_carrito(request):
+
+    carrito = request.session.get('carrito', [])
+
+
+    total_carrito = sum(item['producto']['precio'] * item['cantidad'] for item in carrito)
+
+    return render(request, 'carrito.html', {
+        'carrito': carrito,
+        'total_carrito': total_carrito,
+    })

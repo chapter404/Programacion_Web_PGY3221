@@ -43,6 +43,8 @@ urlpatterns = [
     path('eliminar_categoria/<int:categoria_id>/', views.eliminar_categoria, name='eliminar_categoria'),
     path('modificar_perfil/', views.modificar_perfil, name='modificar_perfil'),
     path('carrito/', views.ver_carrito, name='ver_carrito'),
+    path('agregar_carrito/<int:juego_id>/', views.agregar_carrito, name='agregar_carrito'),
+    path('carrito/eliminar/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
 ]
 
 if settings.DEBUG:
