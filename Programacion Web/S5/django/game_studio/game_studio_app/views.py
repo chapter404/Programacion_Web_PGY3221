@@ -137,12 +137,12 @@ def panel_usuario(request):
     usuario = Usuario.objects.get(user=request.user)
     return render(request, 'game_studio_app/panel_usuario.html', {'usuario': usuario})
 
-
+@login_required
 def mostrar_juegos(request):
     juegos = Juego.objects.all()
     return render(request, 'administrar_juegos/mostrar_juegos.html', {'juegos': juegos})
 
-
+@login_required
 def crear_juego(request):
     if request.method == 'POST':
         form = JuegoForm(request.POST, request.FILES)
@@ -156,7 +156,7 @@ def crear_juego(request):
         form = JuegoForm()
     return render(request, 'administrar_juegos/crear_juego.html', {'form': form})
 
-
+@login_required
 def editar_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
     if request.method == 'POST':
@@ -171,14 +171,14 @@ def editar_juego(request, juego_id):
         form = JuegoForm(instance=juego)
     return render(request, 'administrar_juegos/editar_juego.html', {'form': form})
 
-
+@login_required
 def eliminar_juego(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
     if request.method == 'POST':
         juego.delete()
         return redirect('mostrar_juegos')
 
-
+@login_required
 def categoria_juegos(request, categoria):
     juegos = Juego.objects.filter(categoria_juego__nombre_categoria=categoria)
     
@@ -187,12 +187,12 @@ def categoria_juegos(request, categoria):
     return render(request, 'categoria_juegos.html', {'juegos': juegos, 'categoria_titulo': categoria_titulo})
 
 
-
+@login_required
 def detalle_juego(request, id):
     juego = Juego.objects.get(id=id)
     return render(request, 'detalle_juego.html', {'juego': juego})
 
-
+@login_required
 def crear_categoria(request):
     if request.method == 'POST':
         nombre = request.POST.get('nombre_categoria')
@@ -202,7 +202,7 @@ def crear_categoria(request):
 
     return render(request, 'administrar_juegos/crear_categoria.html')
 
-
+@login_required
 def editar_categoria(request, categoria_id):
     categoria = get_object_or_404(Categoria, id=categoria_id)
     if request.method == 'POST':
@@ -213,14 +213,14 @@ def editar_categoria(request, categoria_id):
             return redirect('mostrar_categorias')
     return render(request, 'administrar_juegos/editar_categoria.html', {'categoria': categoria})
 
-
+@login_required
 def eliminar_categoria(request, categoria_id):
     categoria = get_object_or_404(Categoria, id=categoria_id)
     if request.method == 'POST':
         categoria.delete()
         return redirect('mostrar_categorias')
 
-
+@login_required
 def mostrar_categorias(request):
     categorias = Categoria.objects.all()
     return render(request, 'administrar_juegos/mostrar_categorias.html', {'categorias': categorias})
