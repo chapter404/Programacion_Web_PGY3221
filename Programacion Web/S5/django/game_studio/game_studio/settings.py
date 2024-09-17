@@ -80,13 +80,13 @@ WSGI_APPLICATION = 'game_studio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'gsbohitl0d7xba5e_high',
+        'NAME': 'bdgenerica2024_high',
         'USER': 'ADMIN',
-        'PASSWORD': 'Trinidad.1012',
+        'PASSWORD': 'Oracle123456',
         'OPTIONS': {
-            'config_dir': r'C:\Users\erika\Desktop\Duoc\wallet\Wallet_GSBOHITL0D7XBA5E',
-            'wallet_location': r'C:\Users\erika\Desktop\Duoc\wallet\Wallet_GSBOHITL0D7XBA5E',
-            'wallet_password': 'Trinidad.1012',
+            'config_dir': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
+            'wallet_location': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
+            'wallet_password': 'Oracle123456',
         }
     }
 }
