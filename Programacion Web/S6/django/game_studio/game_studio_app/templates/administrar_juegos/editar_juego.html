@@ -1,0 +1,12 @@
+{% extends 'administrar_juegos/base_juego.html' %}
+
+
+{% block content %}
+<h2>{% if form.instance.pk %}Editar Juego{% else %}Crear Juego{% endif %}</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Guardar</button>
+</form>
+<a href="{% url 'mostrar_juegos' %}" class="btn btn-secondary">Cancelar</a>
+{% endblock %}
