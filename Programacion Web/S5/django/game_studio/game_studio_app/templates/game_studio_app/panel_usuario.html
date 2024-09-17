@@ -16,15 +16,34 @@
                 <h2 class="text-center mb-4">Bienvenido al Panel de Usuario, {{ user.username }}!</h2>
                 <p class="text-center">Aquí puedes gestionar tu cuenta y ver tus actividades.</p>
 
-                <div class="mt-4">
-                    <h4 class="text-center">Información de Perfil</h4>
-                    <ul class="list-group mt-3">
-                        <li class="list-group-item"><strong>Nombre Real:</strong> {{ usuario.nombre_real }}</li>
-                        <li class="list-group-item"><strong>Correo Electrónico:</strong> {{ usuario.correo }}</li>
-                        <li class="list-group-item"><strong>Dirección de Despacho:</strong> {{ usuario.direccion_despacho }}</li>
-                        <li class="list-group-item"><strong>Fecha de Nacimiento:</strong> {{ usuario.fecha_nacimiento }}</li>
-                    </ul>
-                </div>
+                <form method="POST" action="{% url 'modificar_perfil' %}">
+                    {% csrf_token %}
+                    <div class="mt-4">
+                        <h4 class="text-center">Información de Perfil</h4>
+                        <ul class="list-group mt-3">
+                            <li class="list-group-item">
+                                <strong>Nombre Real:</strong>
+                                <input type="text" name="nombre_real" class="form-control" value="{{ usuario.nombre_real }}" required>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Correo Electrónico:</strong>
+                                <input type="email" name="correo" class="form-control" value="{{ usuario.correo }}" required>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Dirección de Despacho:</strong>
+                                <input type="text" name="direccion_despacho" class="form-control" value="{{ usuario.direccion_despacho }}" required>
+                            </li>
+                            <li class="list-group-item">
+                                <strong>Fecha de Nacimiento:</strong>
+                                <input type="date" name="fecha_nacimiento" class="form-control" value="{{ usuario.fecha_nacimiento|date:'Y-m-d' }}" required>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-success mt-3">Guardar Cambios</button>
+                    </div>
+                </form>
 
                 <div class="text-center mt-4">
                     {% if user.is_authenticated %}
