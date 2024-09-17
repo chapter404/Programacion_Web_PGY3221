@@ -116,3 +116,32 @@ a img:hover {
 .alert .btn-close {
     color: white;
 }
+
+
+.carrito-container {
+    position: relative;
+}
+
+.carrito-dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    top: 100%;
+    width: 200px;
+    background-color: white;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 4px;
+    z-index: 1000;
+    padding: 10px;
+}
+
+.carrito-container:hover .carrito-dropdown {
+    display: block;
+}
+
+.carrito-dropdown p {
+    margin: 0;
+    font-size: 14px;
+    color: #555;
+}
+
