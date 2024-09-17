@@ -8,6 +8,8 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from .forms import UsuarioForm, LoginForm
 from .models import Usuario
+from . import views
+
 
 logging.basicConfig(level=logging.DEBUG)
 logger = logging.getLogger('game')
