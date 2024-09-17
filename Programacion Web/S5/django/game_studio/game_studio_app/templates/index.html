@@ -29,7 +29,7 @@
                     {% if user.is_authenticated %}
                         {% if user.is_superuser %}
                             <a href="{% url 'admin:index' %}" class="text-dark">Panel de Superusuario</a>
-                            <a href
+
                             <a href="{% url 'mostrar_juegos' %}" class="text-dark ms-3">Administrar juegos</a>
                         {% else %}
                             <a href="{% url 'panel_usuario' %}" class="text-dark">Panel de Usuario</a>
