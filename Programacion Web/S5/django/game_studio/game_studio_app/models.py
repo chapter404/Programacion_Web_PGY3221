@@ -25,7 +25,7 @@ class Juego(models.Model):
     categoria_juego = models.ForeignKey(Categoria, related_name='juegos', on_delete=models.CASCADE)
     precio_juego = models.DecimalField(max_digits=10, decimal_places=2)
     descripcion_juego = models.TextField()
-    imagen_juego = models.ImageField(upload_to='juegos/imagenes/', null=True, blank=True)
+    imagen_juego = models.ImageField(upload_to='imagenes/', null=True, blank=True)
     
     def __str__(self):
         return self.titulo_juego
