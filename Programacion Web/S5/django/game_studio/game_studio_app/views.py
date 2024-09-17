@@ -264,8 +264,53 @@ def ver_carrito(request):
 def eliminar_del_carrito(request, producto_id):
     carrito = request.session.get('carrito', [])
 
-    carrito = [item for item in carrito if item['producto_id'] != producto_id]
+    # Filtrar el carrito para eliminar el producto
+    carrito = [item for item in carrito if item['producto']['id'] != producto_id]
 
+    # Guardar el carrito actualizado en la sesión
     request.session['carrito'] = carrito
 
     return redirect('ver_carrito')
+
+def agregar_carrito(request, juego_id):
+    # Obtén el juego que se desea agregar al carrito
+    juego = get_object_or_404(Juego, id=juego_id)
+
+    # Obtener el carrito desde la sesión (si no existe, crea una lista vacía)
+    carrito = request.session.get('carrito', [])
+
+    # Verificar si el juego ya está en el carrito
+    juego_en_carrito = next((item for item in carrito if item['producto']['id'] == juego.id), None)
+
+    if juego_en_carrito:
+        # Si el juego ya está en el carrito, incrementar la cantidad
+        juego_en_carrito['cantidad'] += 1
+    else:
+        # Si no está en el carrito, agregar el juego con la cantidad inicial de 1
+        carrito.append({
+            'producto': {
+                'id': juego.id,
+                'nombre': juego.titulo_juego,
+                'precio': float(juego.precio_juego),  # Convertir Decimal a float
+                'imagen': juego.imagen_juego.url if juego.imagen_juego else None
+            },
+            'cantidad': 1
+        })
+
+    # Guardar el carrito actualizado en la sesión
+    request.session['carrito'] = carrito
+
+    # Redirigir a la página del carrito
+    return redirect('ver_carrito')
+
+def ver_carrito(request):
+    # Obtener el carrito de la sesión
+    carrito = request.session.get('carrito', [])
+
+    # Calcular el total del carrito
+    total_carrito = sum(item['producto']['precio'] * item['cantidad'] for item in carrito)
+
+    return render(request, 'carrito.html', {
+        'carrito': carrito,
+        'total_carrito': total_carrito,
+    })

@@ -21,6 +21,10 @@
         <div class="info">
             <p>{{ juego.titulo_juego }}</p>
             <p>${{ juego.precio_juego }}</p>
+            <form action="{% url 'agregar_carrito' juego.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Agregar al carrito</button>
+            </form>
         </div>
     </div>
     {% empty %}
