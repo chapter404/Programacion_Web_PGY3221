@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 
 urlpatterns = [
-    path('', views.inicio, name='inicio'),
+    path('inicio', views.inicio, name='inicio'),
     path('terror', views.terror, name="terror"),
     path('accion', views.accion, name="accion"),
     path('mundo_abierto', views.mundo_abierto, name="mundo_abierto"),

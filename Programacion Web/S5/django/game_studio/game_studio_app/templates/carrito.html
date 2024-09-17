@@ -12,11 +12,11 @@
     <div class="container">
         <h1>Carrito de Compras</h1>
 
-        <!-- Formulario para manejar la actualización del carrito y el pago -->
+        
         <form method="post" action="{% url 'procesar_carrito' %}">
             {% csrf_token %}
             
-            <!-- Producto 1 -->
+            
             <div class="product">
                 <img src="{% static 'images/producto1.jpg' %}" alt="Producto 1">
                 <div class="product-info">
@@ -30,7 +30,7 @@
                 <div class="product-total">$10.00</div>
             </div>
 
-            <!-- Producto 2 -->
+        
             <div class="product">
                 <img src="{% static 'images/producto2.jpg' %}" alt="Producto 2">
                 <div class="product-info">
