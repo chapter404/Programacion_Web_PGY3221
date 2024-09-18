@@ -1,0 +1,33 @@
+{% extends 'administrar_juegos/base_juego.html' %}
+
+
+{% block content %}
+<h2>Lista de Juegos</h2>
+<a href="{% url 'crear_juego' %}" class="btn btn-primary">Añadir Nuevo Juego</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Título</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for juego in juegos %}
+        <tr>
+            <td>{{ juego.titulo_juego }}</td>
+            <td>{{ juego.categoria_juego }}</td>
+            <td>{{ juego.precio_juego }}</td>
+            <td>
+                <a href="{% url 'editar_juego' juego.id %}" class="btn btn-warning">Editar</a>
+                <form action="{% url 'eliminar_juego' juego.id %}" method="post" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>            
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
