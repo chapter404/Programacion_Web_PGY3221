@@ -1,0 +1,73 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    background: url("../imagenes/fondo3.webp");
+    color: #f1c40f;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+}
+
+.navbar {
+    background-color: #fbc02d;
+    border-bottom: 2px solid black;
+}
+
+.navbar-brand, .nav-link {
+    color: black !important;
+    font-weight: bold;
+}
+
+.contenido-principal, .descripcion-juego {
+    max-width: 700px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.contenido-principal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.imagen-juego {
+    max-width: 100%;
+    width: 100%;
+    height: auto;
+    border-radius: 20px;
+    border: solid 3px #f1c40f;
+}
+
+.titulo-juego, .precio-juego {
+    text-align: center;
+    color: #fbc02d;
+    text-shadow: 0 0 10px #fbc02d;
+}
+
+.boton-amarillo {
+    background-color: #fbc02d;
+    color: black;
+    border: none;
+    font-weight: bold;
+    padding: 10px 20px;
+}
+
+.boton-amarillo:hover {
+    background-color: #ffc107;
+}
+
+.descripcion-juego {
+    background-color: #333;
+    color: #f1c40f;
+    padding: 20px;
+    height: auto;
+    border-top: 2px solid black;
+    text-align: justify;
+}
+
+.descripcion-juego p {
+    margin: 0;
+}

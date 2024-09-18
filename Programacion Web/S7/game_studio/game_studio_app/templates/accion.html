@@ -1,0 +1,31 @@
+{% extends 'base_categorias.html' %}
+{% load static %}
+
+{% block title %}Categoría Acción{% endblock %}
+
+{% block content %}
+<div class="contenedor-main row">
+    <div class="contenedor-juego col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="contenedor-imagen">
+            <a href="{% url 'cod' %}">
+                <img src="{% static './imagenes/call of duty.png' %}" alt="Call of Duty" class="imagen-juego">
+            </a>
+        </div>
+        <div class="info">
+            <p>Call of Duty</p>
+            <p>$35.000</p>
+        </div>
+    </div>
+    <div class="contenedor-juego col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="contenedor-imagen">
+            <a href="{% url 'brawl'%}">
+                <img src="{% static './imagenes/brawl-stars.png' %}" alt="Brawl Stars" class="imagen-juego">
+            </a>
+        </div>
+        <div class="info">
+            <p>Brawl Stars</p>
+            <p>$45.000</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
