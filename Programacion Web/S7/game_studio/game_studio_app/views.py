@@ -1,3 +1,4 @@
+import logging
 from django.urls import reverse
 from .forms import UsuarioForm, LoginForm, JuegoForm
 from .models import Usuario, Juego, Categoria
@@ -7,8 +8,12 @@ from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-import logging
 from django.core.cache import cache
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import JuegoSerializer
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -102,11 +107,6 @@ def registrar(request):
 
 
 def iniciar_sesion(request):
-    logger.debug('Este es un mensaje DEBUG')
-    logger.info('Este es un mensaje INFO')
-    logger.warning('Este es un mensaje WARNING')
-    logger.error('Este es un mensaje ERROR')
-    logger.critical('Este es un mensaje CRITICAL')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -124,7 +124,6 @@ def iniciar_sesion(request):
                     # return redirect(reverse('admin:index'))
                 else:
                     logger.debug('Usuario no es superusuario')
-                    # return redirect('panel_usuario')
                 return redirect('inicio')
             else:
                 messages.error(request, 'Nombre de usuario o clave incorrectos.')
@@ -306,3 +305,36 @@ def ver_carrito(request):
         'carrito': carrito,
         'total_carrito': total_carrito,
     })
+
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def juegos_api(request, id=None):
+    if request.method == 'GET':
+        if id:
+            juego = get_object_or_404(Juego, pk=id)
+            serializer = JuegoSerializer(juego)
+        else:
+            juegos = Juego.objects.all()
+            serializer = JuegoSerializer(juegos, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = JuegoSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'PUT':
+        juego = get_object_or_404(Juego, pk=id)
+        serializer = JuegoSerializer(juego, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        juego = get_object_or_404(Juego, pk=id)
+        juego.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)

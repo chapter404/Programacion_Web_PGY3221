@@ -1,3 +1,5 @@
+''' Este archivo se encarga de manejar las rutas de la aplicación, es decir, las URL que se pueden visitar en la página web. '''
+
 from django.urls import path
 from . import views
 from django.contrib import admin
@@ -5,6 +7,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
+
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
@@ -45,6 +48,9 @@ urlpatterns = [
     path('carrito/', views.ver_carrito, name='ver_carrito'),
     path('agregar_carrito/<int:juego_id>/', views.agregar_carrito, name='agregar_carrito'),
     path('carrito/eliminar/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
+    path('api/juegos/', views.juegos_api, name='juegos_api'),
+    path('api/juegos/<int:id>/', views.juegos_api, name='juego_api_detalle'),
+
 ]
 
 if settings.DEBUG:
