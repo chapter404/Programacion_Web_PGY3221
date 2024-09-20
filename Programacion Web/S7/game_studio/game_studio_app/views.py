@@ -14,6 +14,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import JuegoSerializer
+import requests
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -338,3 +339,35 @@ def juegos_api(request, id=None):
         juego = get_object_or_404(Juego, pk=id)
         juego.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def buscar_juegos(request):
+    logger.debug('Ejecutando vista buscar_juegos')
+    if request.method == 'POST':
+        logger.debug('Buscando juegos en la API')
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        nombre_juego = request.POST.get('nombre_juego')
+        url = f"https://www.giantbomb.com/api/search/?api_key=e4eb5381cdf5cbb6a8396befe44004d110a0df1d&format=json&query='{nombre_juego}'&resources=game"
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        juegos = [resultado for resultado in data['results']]
+            
+        return render(request, 'administrar_juegos/buscar_juegos.html', {'juegos': juegos})
+    return render(request, 'administrar_juegos/buscar_juegos.html')
+
+
+def detalle_juego_seleccionado(request):
+    if request.method == 'POST':
+        juego_id = request.POST.get('juego_id')
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        url = f"https://www.giantbomb.com/api/game/{juego_id}/?api_key=e4eb5381cdf5cbb6a8396befe44004d110a0df1d&format=json"
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        juego = data['results']
+        return render(request, 'administrar_juegos/detalle_juego_seleccionado.html', {'juego': juego})
+
+    return redirect('buscar_juegos')

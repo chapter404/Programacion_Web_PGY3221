@@ -1,0 +1,23 @@
+{% extends 'administrar_juegos/base_juego.html' %}
+
+{% block content %}
+<h2>Detalle del juego</h2>
+<div class="col-md-4">
+    <div class="card mb-3">
+        <img src="{{ juego.image.small_url }}" class="card-img-top" alt="{{ juego.aliases }}">
+        <div class="card-body">
+            <h5 class="card-title">{{ juego.aliases }}</h5>
+            <p class="card-text">{{ juego.deck|slice:":100" }}...</p>
+        </div>
+    </div>
+</div>
+<form method="POST" action="">
+    {% csrf_token %}
+    <input type="hidden" name="juego_id" value="{{ juego.id }}">
+    
+    <button type="submit" class="btn btn-primary">Añadir juego</button>
+</form>
+
+<a href="{% url 'buscar_juegos' %}" class="btn btn-secondary">Volver</a>
+{% endblock %}
+

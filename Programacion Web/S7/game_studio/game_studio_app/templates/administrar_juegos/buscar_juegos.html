@@ -1,0 +1,26 @@
+{% extends 'administrar_juegos/base_juego.html' %}
+
+{% block content %}
+<h2>Buscar Juegos</h2>
+<form method="POST" action="{% url 'buscar_juegos' %}">
+    {% csrf_token %}
+    <label for="nombre_juego">Nombre del Juego:</label>
+    <input type="text" id="nombre_juego" name="nombre_juego" required>
+    <button type="submit" class="btn btn-primary">Buscar Juego</button>
+</form>
+
+{% if juegos %}
+    <label for="seleccionar_juego">Selecciona un Juego:</label>
+    <form method="POST" action="{% url 'detalle_juego_seleccionado' %}">
+        {% csrf_token %}
+        <select id="juego_id" name="juego_id">
+            {% for juego in juegos %}
+                <option value="{{ juego.id }}">{{ juego.aliases }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn btn-success">Seleccionar Juego</button>
+    </form>
+{% endif %}
+
+<a href="{% url 'mostrar_juegos' %}" class="btn btn-secondary">Cancelar</a>
+{% endblock %}
