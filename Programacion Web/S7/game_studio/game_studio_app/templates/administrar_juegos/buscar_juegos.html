@@ -15,7 +15,7 @@
         {% csrf_token %}
         <select id="juego_id" name="juego_id">
             {% for juego in juegos %}
-                <option value="{{ juego.id }}">{{ juego.aliases }}</option>
+                <option value="{{ juego.id }}">{{ juego.name }}</option>
             {% endfor %}
         </select>
         <button type="submit" class="btn btn-success">Seleccionar Juego</button>

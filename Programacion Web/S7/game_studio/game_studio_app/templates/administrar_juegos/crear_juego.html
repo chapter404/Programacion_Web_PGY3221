@@ -5,8 +5,19 @@
 <form method="POST" enctype="multipart/form-data">
     {% csrf_token %}
     {{ form.as_p }}
+    
+    {% if imagen_juego_url %}
+    <div class="form-group">
+        <label for="imagen_juego_preview">Previsualización de la imagen:</label><br>
+        <img id="imagen_juego_preview" src="{{ imagen_juego_url }}" alt="Imagen del juego" style="width: 100px; height: auto;"><br>
+        <label>
+            <input type="checkbox" name="usar_imagen" value="True"> Usar esta imagen para el juego
+        </label>
+    </div>
+    {% endif %}
+    
     <button type="submit" class="btn btn-success">Guardar</button>
 </form>
 <a href="{% url 'mostrar_juegos' %}" class="btn btn-secondary">Cancelar</a>
-<a href="{% url 'buscar_juegos' %}" class="btn btn-secondary">Buscar juego con GiantBomb API</a>
+<a href="{% url 'buscar_juegos' %}" class="btn btn-primary">Buscar juego con GiantBomb API</a>
 {% endblock %}

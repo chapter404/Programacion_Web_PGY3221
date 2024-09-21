@@ -9,7 +9,6 @@
     <link rel="stylesheet" href="{% static './css/carrito.css' %}">
     <title>Carrito de Compras</title>
     <style>
-        /* Estilos generales */
         body {
             background-color: #f8f9fa;
         }
@@ -27,7 +26,6 @@
             color: #333;
         }
 
-        /* Estilo para los productos en el carrito */
         .elemento-carrito {
             display: flex;
             justify-content: space-between;
@@ -65,7 +63,6 @@
             margin-right: 20px;
         }
 
-        /* Botón para eliminar producto */
         .btn-eliminar {
             background-color: #dc3545;
             color: white;
@@ -80,7 +77,6 @@
             background-color: #c82333;
         }
 
-        /* Precio total y botón de pago */
         .precio-total {
             text-align: right;
             font-size: 24px;
@@ -106,7 +102,6 @@
             background-color: #0056b3;
         }
 
-        /* Mensaje de carrito vacío */
         .mensaje-vacio {
             text-align: center;
             color: #555;
@@ -152,7 +147,7 @@
             <button class="btn-pago">Proceder al Pago</button>
         {% else %}
             <div class="mensaje-vacio">
-                <p>Tu carrito está vacío. <a href="{% url 'categoria_juegos' 'accion' %}">Seguir comprando</a></p>
+                <p>Tu carrito está vacío. <a href="{% url 'inicio' %}">Seguir comprando</a></p>
             </div>
         {% endif %}
     </div>

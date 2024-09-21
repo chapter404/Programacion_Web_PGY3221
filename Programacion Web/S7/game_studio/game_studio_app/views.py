@@ -1,7 +1,8 @@
-import logging
+import logging, requests
 from django.urls import reverse
 from .forms import UsuarioForm, LoginForm, JuegoForm
 from .models import Usuario, Juego, Categoria
+from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
@@ -14,7 +15,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import JuegoSerializer
-import requests
+
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -144,22 +145,51 @@ def panel_usuario(request):
 def mostrar_juegos(request):
     cache.clear()
     juegos = Juego.objects.all()
-    logger.debug(f"Juegos obtenidos: {juegos}")
     return render(request, 'administrar_juegos/mostrar_juegos.html', {'juegos': juegos})
 
 @login_required
 def crear_juego(request):
+    imagen_juego_url = None
+
     if request.method == 'POST':
         form = JuegoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Juego creado exitosamente.')
-            return redirect('mostrar_juegos')
+
+        nombre_formulario = request.POST.get('nombre_formulario')
+        if nombre_formulario == 'formulario_datos_api':
+            titulo_juego = request.POST.get('juego.nombre')
+            descripcion_juego = request.POST.get('juego.descripcion')
+            imagen_juego_url = request.POST.get('juego.imagen')        
+
+            form = JuegoForm(initial={
+                'titulo_juego': titulo_juego,
+                'descripcion_juego': descripcion_juego,
+                'imagen_juego_url': imagen_juego_url,
+            })
+        
         else:
-            messages.error(request, 'Hay errores en el formulario.')
+            if request.POST.get('imagen_juego_url'):
+                titulo_del_juego = request.POST.get('titulo_juego')
+                imagen_juego_url = request.POST.get('imagen_juego_url')
+                response = requests.get(imagen_juego_url)
+                contenedor_imagen_juego = ContentFile(response.content, name='imagen_temporal.jpg')
+                juego = form.save(commit=False)
+                juego.imagen_juego.save(f'{titulo_del_juego}.jpg', contenedor_imagen_juego)
+                juego.save()
+            if form.is_valid():
+                form.save()
+                return redirect('mostrar_juegos')
+            else:
+                logger.debug('Formulario incompleto')
+            
+
     else:
         form = JuegoForm()
-    return render(request, 'administrar_juegos/crear_juego.html', {'form': form})
+
+    return render(request, 'administrar_juegos/crear_juego.html', {'form': form, 'imagen_juego_url': imagen_juego_url})
+
+
+
+
 
 @login_required
 def editar_juego(request, juego_id):

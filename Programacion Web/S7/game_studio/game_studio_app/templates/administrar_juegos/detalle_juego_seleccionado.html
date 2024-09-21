@@ -1,23 +1,32 @@
 {% extends 'administrar_juegos/base_juego.html' %}
 
 {% block content %}
-<h2>Detalle del juego</h2>
-<div class="col-md-4">
-    <div class="card mb-3">
-        <img src="{{ juego.image.small_url }}" class="card-img-top" alt="{{ juego.aliases }}">
-        <div class="card-body">
-            <h5 class="card-title">{{ juego.aliases }}</h5>
-            <p class="card-text">{{ juego.deck|slice:":100" }}...</p>
+<h2 class="text-center">Detalle del juego</h2>
+<div class="container">
+    <div class="row justify-content-center mb-3">
+        <div class="col-md-8 text-center">
+            <img src="{{ juego.image.small_url }}" alt="{{ juego.name }}" class="img-fluid">
+        </div>
+    </div>
+    <div class="row justify-content-center">
+        <div class="col-md-8 text-center">
+            <h5>{{ juego.name }}</h5>
+            <p>{{ juego.deck }}</p>
         </div>
     </div>
 </div>
-<form method="POST" action="">
+<form method="POST" action="{% url 'crear_juego' %}" class="text-center mt-4">
     {% csrf_token %}
-    <input type="hidden" name="juego_id" value="{{ juego.id }}">
+    <input type="hidden" name="nombre_formulario" value="formulario_datos_api">
+    <input type="hidden" name="juego.nombre" value="{{ juego.name }}">
+    <input type="hidden" name="juego.descripcion" value="{{ juego.deck }}">
+    <input type="hidden" name="juego.imagen" value="{{ juego.image.medium_url }}">
+    <input type="hidden" name="juego.id" value="{{ juego.id }}">
     
-    <button type="submit" class="btn btn-primary">Añadir juego</button>
+    <button type="submit" class="btn btn-primary">Seleccionar Juego</button>
 </form>
 
-<a href="{% url 'buscar_juegos' %}" class="btn btn-secondary">Volver</a>
+<div class="text-center mt-3">
+    <a href="{% url 'buscar_juegos' %}" class="btn btn-secondary">Volver</a>
+</div>
 {% endblock %}
-
