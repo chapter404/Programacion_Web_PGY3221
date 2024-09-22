@@ -50,6 +50,7 @@ urlpatterns = [
     path('carrito/eliminar/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
     path('api/juegos/', views.juegos_api, name='juegos_api'),
     path('api/juegos/<int:id>/', views.juegos_api, name='juego_api_detalle'),
+    path('api/categorias/', views.categorias_api, name='categorias_api'),
     path('buscar_juegos/', views.buscar_juegos, name='buscar_juegos'),
     path('detalle_juego_seleccionado', views.detalle_juego_seleccionado, name='detalle_juego_seleccionado'),
 
