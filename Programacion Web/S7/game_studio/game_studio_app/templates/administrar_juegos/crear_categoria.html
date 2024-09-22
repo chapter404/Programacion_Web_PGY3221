@@ -1,6 +1,104 @@
 {% extends 'administrar_juegos/base_juego.html' %}
 
 {% block content %}
+<style>
+    body {
+        font-family: "Montserrat", sans-serif;
+        background: url("https://c4.wallpaperflare.com/wallpaper/644/305/118/pattern-black-gradient-texture-wallpaper-preview.jpg") no-repeat center center fixed;
+        background-size: cover;
+        color: #f1c40f;
+        margin: 0;
+        padding: 0;
+    }
+
+    h2 {
+        color: #fbc02d;
+        text-align: center;
+        margin-top: 20px;
+        text-shadow: 0 0 5px #f1c40f;
+    }
+
+    form {
+        width: 50%;
+        margin: 20px auto;
+        background-color: #333;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+        color: #f1c40f;
+    }
+
+    form label {
+        font-weight: bold;
+        color: #fbc02d;
+        display: block;
+        margin-bottom: 5px;
+    }
+
+    form input[type="text"] {
+        width: 100%;
+        padding: 10px;
+        margin: 5px 0 15px;
+        border: 2px solid #f1c40f;
+        border-radius: 5px;
+        background-color: #222;
+        color: #f1c40f;
+    }
+
+    form input[type="text"]:focus {
+        border-color: #ffc107;
+        outline: none;
+        box-shadow: 0 0 5px #ffc107;
+    }
+
+    button {
+        background-color: #fbc02d;
+        color: black;
+        border: 2px solid #fbc02d;
+        font-weight: bold;
+        padding: 10px 15px;
+        text-decoration: none;
+        margin: 5px;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        display: inline-block;
+        box-shadow: 0 0 10px #fbc02d;
+    }
+
+    button:hover {
+        background-color: #ffc107;
+        box-shadow: 0 0 15px #ffc107;
+    }
+
+    .btn-secondary {
+        background-color: #666;
+        color: white;
+        border: 2px solid #f1c40f;
+        font-weight: bold;
+        padding: 10px 15px;
+        text-decoration: none;
+        margin: 5px;
+        transition: all 0.3s ease;
+        border-radius: 5px;
+        display: inline-block;
+        box-shadow: 0 0 10px #f1c40f;
+    }
+
+    .btn-secondary:hover {
+        background-color: #999;
+        color: black;
+        box-shadow: 0 0 10px #ffc107;
+    }
+
+    a {
+        text-decoration: none;
+    }
+
+    a:hover {
+        text-decoration: underline;
+    }
+</style>
+
 <h2>{% if form.instance.pk %}Editar Categoría{% else %}Crear Categoría{% endif %}</h2>
 <form method="POST" action="{% url 'crear_categoria' %}">
     {% csrf_token %}
