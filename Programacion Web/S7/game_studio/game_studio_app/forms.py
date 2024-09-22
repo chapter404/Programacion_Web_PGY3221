@@ -27,6 +27,7 @@ class LoginForm(forms.Form):
 
 
 class JuegoForm(forms.ModelForm):
+    imagen_juego_url = forms.URLField(required=False, widget=forms.HiddenInput())
     class Meta:
         model = Juego
         fields = ['titulo_juego', 'categoria_juego', 'precio_juego', 'descripcion_juego', 'imagen_juego']

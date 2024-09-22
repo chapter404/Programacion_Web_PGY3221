@@ -1,14 +1,21 @@
+import logging, requests
 from django.urls import reverse
 from .forms import UsuarioForm, LoginForm, JuegoForm
 from .models import Usuario, Juego, Categoria
+from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
-import logging
 from django.core.cache import cache
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
+from rest_framework import status
+from .serializers import CategoriaSerializer, JuegoSerializer
+
 
 
 logging.basicConfig(level=logging.DEBUG)
@@ -102,11 +109,6 @@ def registrar(request):
 
 
 def iniciar_sesion(request):
-    logger.debug('Este es un mensaje DEBUG')
-    logger.info('Este es un mensaje INFO')
-    logger.warning('Este es un mensaje WARNING')
-    logger.error('Este es un mensaje ERROR')
-    logger.critical('Este es un mensaje CRITICAL')
     if request.method == 'POST':
         form = LoginForm(request.POST)
         if form.is_valid():
@@ -124,7 +126,6 @@ def iniciar_sesion(request):
                     # return redirect(reverse('admin:index'))
                 else:
                     logger.debug('Usuario no es superusuario')
-                    # return redirect('panel_usuario')
                 return redirect('inicio')
             else:
                 messages.error(request, 'Nombre de usuario o clave incorrectos.')
@@ -144,22 +145,51 @@ def panel_usuario(request):
 def mostrar_juegos(request):
     cache.clear()
     juegos = Juego.objects.all()
-    logger.debug(f"Juegos obtenidos: {juegos}")
     return render(request, 'administrar_juegos/mostrar_juegos.html', {'juegos': juegos})
 
 @login_required
 def crear_juego(request):
+    imagen_juego_url = None
+
     if request.method == 'POST':
         form = JuegoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            messages.success(request, 'Juego creado exitosamente.')
-            return redirect('mostrar_juegos')
+
+        nombre_formulario = request.POST.get('nombre_formulario')
+        if nombre_formulario == 'formulario_datos_api':
+            titulo_juego = request.POST.get('juego.nombre')
+            descripcion_juego = request.POST.get('juego.descripcion')
+            imagen_juego_url = request.POST.get('juego.imagen')        
+
+            form = JuegoForm(initial={
+                'titulo_juego': titulo_juego,
+                'descripcion_juego': descripcion_juego,
+                'imagen_juego_url': imagen_juego_url,
+            })
+        
         else:
-            messages.error(request, 'Hay errores en el formulario.')
+            if request.POST.get('imagen_juego_url'):
+                titulo_del_juego = request.POST.get('titulo_juego')
+                imagen_juego_url = request.POST.get('imagen_juego_url')
+                response = requests.get(imagen_juego_url)
+                contenedor_imagen_juego = ContentFile(response.content, name='imagen_temporal.jpg')
+                juego = form.save(commit=False)
+                juego.imagen_juego.save(f'{titulo_del_juego}.jpg', contenedor_imagen_juego)
+                juego.save()
+            if form.is_valid():
+                form.save()
+                return redirect('mostrar_juegos')
+            else:
+                logger.debug('Formulario incompleto')
+            
+
     else:
         form = JuegoForm()
-    return render(request, 'administrar_juegos/crear_juego.html', {'form': form})
+
+    return render(request, 'administrar_juegos/crear_juego.html', {'form': form, 'imagen_juego_url': imagen_juego_url})
+
+
+
+
 
 @login_required
 def editar_juego(request, juego_id):
@@ -306,3 +336,83 @@ def ver_carrito(request):
         'carrito': carrito,
         'total_carrito': total_carrito,
     })
+
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def juegos_api(request, id=None):
+    if request.method == 'GET':
+        if id:
+            juego = get_object_or_404(Juego, pk=id)
+            serializer = JuegoSerializer(juego)
+        else:
+            juegos = Juego.objects.all()
+            serializer = JuegoSerializer(juegos, many=True)
+        return Response(serializer.data)
+
+    elif request.method == 'POST':
+        serializer = JuegoSerializer(data=request.data)
+        logger.debug(f"Datos del request: {request.data}")
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'PUT':
+        juego = get_object_or_404(Juego, pk=id)
+        serializer = JuegoSerializer(juego, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        juego = get_object_or_404(Juego, pk=id)
+        juego.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+def buscar_juegos(request):
+    logger.debug('Ejecutando vista buscar_juegos')
+    if request.method == 'POST':
+        logger.debug('Buscando juegos en la API')
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        nombre_juego = request.POST.get('nombre_juego')
+        url = f"https://www.giantbomb.com/api/search/?api_key=e4eb5381cdf5cbb6a8396befe44004d110a0df1d&format=json&query='{nombre_juego}'&resources=game"
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        juegos = [resultado for resultado in data['results']]
+            
+        return render(request, 'administrar_juegos/buscar_juegos.html', {'juegos': juegos})
+    return render(request, 'administrar_juegos/buscar_juegos.html')
+
+
+def detalle_juego_seleccionado(request):
+    if request.method == 'POST':
+        juego_id = request.POST.get('juego_id')
+        headers = {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.3'
+            }
+        url = f"https://www.giantbomb.com/api/game/{juego_id}/?api_key=e4eb5381cdf5cbb6a8396befe44004d110a0df1d&format=json"
+        response = requests.get(url, headers=headers)
+        data = response.json()
+        juego = data['results']
+        return render(request, 'administrar_juegos/detalle_juego_seleccionado.html', {'juego': juego})
+
+    return redirect('buscar_juegos')
+
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def categorias_api(request, id=None):
+    if request.method == 'GET':
+        if id:
+            categoria = get_object_or_404(Categoria, pk=id)
+            serializer = CategoriaSerializer(categoria)
+        else:
+            categorias = Categoria.objects.all()
+            serializer = CategoriaSerializer(categorias, many=True)
+        return Response(serializer.data)
+    
