@@ -1,0 +1,34 @@
+{% extends 'base_categorias.html' %}
+{% load static %}
+
+{% block title %}Categoría {{ categoria_titulo }}{% endblock %}
+
+{% block content %}
+<div class="contenedor-main row">
+    {% for juego in juegos %}
+    <div class="contenedor-juego col-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="contenedor-imagen">
+            {% if juego.imagen_juego %}
+                <a href="">
+                    <img src="{{ juego.imagen_juego.url }}" alt="{{ juego.titulo_juego }}" class="imagen-juego">
+                </a>
+            {% else %}
+                <a href="">
+                    <img src="" alt="Imagen no disponible" class="imagen-juego">
+                </a>
+            {% endif %}
+        </div>
+        <div class="info">
+            <p>{{ juego.titulo_juego }}</p>
+            <p>${{ juego.precio_juego }}</p>
+            <form action="{% url 'agregar_carrito' juego.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Agregar al carrito</button>
+            </form>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay juegos disponibles en esta categoría.</p>
+    {% endfor %}
+</div>
+{% endblock %}
