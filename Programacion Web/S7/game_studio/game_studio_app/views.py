@@ -14,7 +14,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
-from .serializers import JuegoSerializer
+from .serializers import CategoriaSerializer, JuegoSerializer
 
 
 
@@ -352,6 +352,7 @@ def juegos_api(request, id=None):
 
     elif request.method == 'POST':
         serializer = JuegoSerializer(data=request.data)
+        logger.debug(f"Datos del request: {request.data}")
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -401,3 +402,17 @@ def detalle_juego_seleccionado(request):
         return render(request, 'administrar_juegos/detalle_juego_seleccionado.html', {'juego': juego})
 
     return redirect('buscar_juegos')
+
+
+@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@permission_classes([IsAuthenticated])
+def categorias_api(request, id=None):
+    if request.method == 'GET':
+        if id:
+            categoria = get_object_or_404(Categoria, pk=id)
+            serializer = CategoriaSerializer(categoria)
+        else:
+            categorias = Categoria.objects.all()
+            serializer = CategoriaSerializer(categorias, many=True)
+        return Response(serializer.data)
+    
