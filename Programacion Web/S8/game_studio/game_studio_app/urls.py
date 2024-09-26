@@ -52,6 +52,7 @@ urlpatterns = [
     path('api/categorias/', views.categorias_api, name='categorias_api'),
     path('buscar_juegos/', views.buscar_juegos, name='buscar_juegos'),
     path('detalle_juego_seleccionado', views.detalle_juego_seleccionado, name='detalle_juego_seleccionado'),
+    path('traducir_texto', views.traducir_texto, name='traducir_texto'),
 
 ]
 

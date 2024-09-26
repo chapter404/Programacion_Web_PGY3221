@@ -1,11 +1,12 @@
+import json
 import logging, requests
-from django.urls import reverse
 from .forms import UsuarioForm, LoginForm, JuegoForm
 from .models import Usuario, Juego, Categoria
+from django.http import JsonResponse
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -181,7 +182,6 @@ def crear_juego(request):
             else:
                 logger.debug('Formulario incompleto')
             
-
     else:
         form = JuegoForm()
 
@@ -416,3 +416,25 @@ def categorias_api(request, id=None):
             serializer = CategoriaSerializer(categorias, many=True)
         return Response(serializer.data)
     
+
+def traducir_texto(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        descripcion_juego = data.get('descripcion_juego', '')
+
+        url = "https://api-free.deepl.com/v2/translate"
+        payload = {
+            "text": [descripcion_juego],
+            "target_lang": "ES"
+        }
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'DeepL-Auth-Key 38880200-ee60-43c1-8d26-51525ec06337:fx'
+        }
+        response = requests.post(url, headers=headers, json=payload)
+
+        if response.status_code == 200:
+            traduccion = response.json()["translations"][0]["text"]
+            return JsonResponse({'texto_traducido': traduccion})
+        else:
+            return JsonResponse({'error': 'Error al traducir el texto'}, status=500)

@@ -1,5 +1,6 @@
 {% extends 'administrar_juegos/base_juego.html' %}
 
+{% load static %}
 {% block content %}
 <style>
     body {
@@ -157,9 +158,14 @@
         </label>
     </div>
     {% endif %}
-    
+    <button type="button" id="btn-traducir" class="btn btn-info">Traducir Descripción</button>
     <button type="submit" class="btn btn-success">Guardar</button>
 </form>
 <a href="{% url 'mostrar_juegos' %}" class="btn btn-secondary">Cancelar</a>
 <a href="{% url 'buscar_juegos' %}" class="btn btn-primary">Buscar juego con GiantBomb API</a>
+
+<script>
+    var url_traducir = "{% url 'traducir_texto' %}";
+</script>
+<script src="{% static 'js/traducir.js' %}"></script>
 {% endblock %}
