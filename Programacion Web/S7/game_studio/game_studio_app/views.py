@@ -416,3 +416,4 @@ def categorias_api(request, id=None):
             serializer = CategoriaSerializer(categorias, many=True)
         return Response(serializer.data)
     
+
