@@ -417,8 +417,7 @@ def detalle_juego_seleccionado(request):
 #         return Response(serializer.data)
     
 
-
-@api_view(['GET', 'POST', 'PUT', 'DELETE'])
+@api_view(['GET', 'POST'])
 @permission_classes([IsAuthenticated])
 def categorias_api(request, id=None):
     if request.method == 'GET':
@@ -428,33 +427,22 @@ def categorias_api(request, id=None):
         else:
             categorias = Categoria.objects.all()
             serializer = CategoriaSerializer(categorias, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
     elif request.method == 'POST':
-        serializer = CategoriaSerializer(data=request.data)
-        logger.debug(f"Datos del request: {request.data}")
+        data = request.data.copy()
+        
+        # Eliminar el campo 'id' si está presente, ya que Django generará automáticamente el id
+        if 'id' in data:
+            del data['id']
+        
+        serializer = CategoriaSerializer(data=data)
+        
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'PUT':
-        if id is None:
-            return Response({'error': 'ID es requerido para actualizar una categoría.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        categoria = get_object_or_404(Categoria, pk=id)
-        serializer = CategoriaSerializer(categoria, data=request.data)
-        if serializer.is_valid():
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-    elif request.method == 'DELETE':
-        if id is None:
-            return Response({'error': 'ID es requerido para eliminar una categoría.'}, status=status.HTTP_400_BAD_REQUEST)
-        
-        categoria = get_object_or_404(Categoria, pk=id)
-        categoria.delete()
-        return Response({'message': 'Categoría eliminada con éxito'}, status=status.HTTP_204_NO_CONTENT)
+        else:
+            logger.error(f"Errores en la validación del serializador: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
