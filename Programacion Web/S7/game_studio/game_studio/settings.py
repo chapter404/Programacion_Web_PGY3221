@@ -77,6 +77,7 @@ WSGI_APPLICATION = 'game_studio.wsgi.application'
 
 
 
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
@@ -84,8 +85,8 @@ DATABASES = {
         'USER': 'ADMIN',
         'PASSWORD': 'Oracle123456',
         'OPTIONS': {
-            'config_dir': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
-            'wallet_location': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
+            'config_dir': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
+            'wallet_location': r'C:\Users\AngryNxho\Documents\Wallet_bdgenerica2024',
             'wallet_password': 'Oracle123456',
         }
     }
