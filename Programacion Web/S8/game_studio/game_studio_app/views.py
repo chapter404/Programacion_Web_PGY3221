@@ -281,31 +281,9 @@ def modificar_perfil(request):
     
     return render(request, 'panel_usuario.html', {'usuario': usuario})
 
-
-def ver_carrito(request):
-    carrito = request.session.get('carrito', [])
-    total_carrito = sum(item['precio'] * item['cantidad'] for item in carrito)
-    
-    return render(request, 'carrito.html', {
-        'carrito': carrito,
-        'total_carrito': total_carrito,
-    })
-
-
-def eliminar_del_carrito(request, producto_id):
-    carrito = request.session.get('carrito', [])
-
-    carrito = [item for item in carrito if item['producto']['id'] != producto_id]
-
-    request.session['carrito'] = carrito
-    
-    return redirect('ver_carrito')
-
 def agregar_carrito(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
-
     carrito = request.session.get('carrito', [])
-
     juego_en_carrito = next((item for item in carrito if item['producto']['id'] == juego.id), None)
 
     if juego_en_carrito:
@@ -322,20 +300,38 @@ def agregar_carrito(request, juego_id):
         })
 
     request.session['carrito'] = carrito
-
     return redirect('ver_carrito')
 
 def ver_carrito(request):
-
     carrito = request.session.get('carrito', [])
-
-
     total_carrito = sum(item['producto']['precio'] * item['cantidad'] for item in carrito)
-
+    
     return render(request, 'carrito.html', {
         'carrito': carrito,
         'total_carrito': total_carrito,
     })
+
+def eliminar_del_carrito(request, producto_id):
+    carrito = request.session.get('carrito', [])
+    carrito = [item for item in carrito if item['producto']['id'] != producto_id]
+    request.session['carrito'] = carrito
+    return redirect('ver_carrito')
+
+
+def actualizar_cantidad(request, producto_id):
+    if request.method == 'POST':
+        nueva_cantidad = int(request.POST.get('cantidad', 1))
+        carrito = request.session.get('carrito', [])
+
+        for item in carrito:
+            if item['producto']['id'] == producto_id:
+                item['cantidad'] = nueva_cantidad
+                break
+
+        request.session['carrito'] = carrito
+        request.session.modified = True
+
+    return redirect('ver_carrito')
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])

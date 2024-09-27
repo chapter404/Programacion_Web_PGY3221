@@ -54,7 +54,12 @@ urlpatterns = [
     path('buscar_juegos/', views.buscar_juegos, name='buscar_juegos'),
     path('detalle_juego_seleccionado', views.detalle_juego_seleccionado, name='detalle_juego_seleccionado'),
     path('traducir_texto', views.traducir_texto, name='traducir_texto'),
+    path('agregar_carrito/<int:juego_id>/', views.agregar_carrito, name='agregar_carrito'),
+    path('ver_carrito/', views.ver_carrito, name='ver_carrito'),
+    path('carrito/actualizar/<int:producto_id>/', views.actualizar_cantidad, name='actualizar_cantidad'),
 
+
+    
 ]
 
 if settings.DEBUG:
