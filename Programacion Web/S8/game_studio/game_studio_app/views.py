@@ -1,11 +1,12 @@
+import json
 import logging, requests
-from django.urls import reverse
 from .forms import UsuarioForm, LoginForm, JuegoForm
 from .models import Usuario, Juego, Categoria
+from django.http import JsonResponse
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -181,7 +182,6 @@ def crear_juego(request):
             else:
                 logger.debug('Formulario incompleto')
             
-
     else:
         form = JuegoForm()
 
@@ -404,6 +404,19 @@ def detalle_juego_seleccionado(request):
     return redirect('buscar_juegos')
 
 
+# @api_view(['GET', 'POST', 'PUT', 'DELETE'])
+# @permission_classes([IsAuthenticated])
+# def categorias_api(request, id=None):
+#     if request.method == 'GET':
+#         if id:
+#             categoria = get_object_or_404(Categoria, pk=id)
+#             serializer = CategoriaSerializer(categoria)
+#         else:
+#             categorias = Categoria.objects.all()
+#             serializer = CategoriaSerializer(categorias, many=True)
+#         return Response(serializer.data)
+
+
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def categorias_api(request, id=None):
@@ -414,5 +427,68 @@ def categorias_api(request, id=None):
         else:
             categorias = Categoria.objects.all()
             serializer = CategoriaSerializer(categorias, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'POST':
+        data = request.data.copy()
+
+        if 'id' in data:
+            del data['id']
+        
+        serializer = CategoriaSerializer(data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            logger.error(f"Errores en la validación del serializador: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'PUT':
+        if id is None:
+            return Response({'error': 'ID es requerido para actualizar una categoría.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        categoria = get_object_or_404(Categoria, pk=id)
+        data = request.data.copy()
+        
+        serializer = CategoriaSerializer(categoria, data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            logger.error(f"Errores en la validación del serializador: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        if id is None:
+            return Response({'error': 'ID es requerido para eliminar una categoría.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        categoria = get_object_or_404(Categoria, pk=id)
+        categoria.delete()
+        return Response({'message': 'Categoría eliminada con éxito'}, status=status.HTTP_204_NO_CONTENT)
     
+    return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+
+def traducir_texto(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        descripcion_juego = data.get('descripcion_juego', '')
+
+        url = "https://api-free.deepl.com/v2/translate"
+        payload = {
+            "text": [descripcion_juego],
+            "target_lang": "ES"
+        }
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'DeepL-Auth-Key 38880200-ee60-43c1-8d26-51525ec06337:fx'
+        }
+        response = requests.post(url, headers=headers, json=payload)
+
+        if response.status_code == 200:
+            traduccion = response.json()["translations"][0]["text"]
+            return JsonResponse({'texto_traducido': traduccion})
+        else:
+            return JsonResponse({'error': 'Error al traducir el texto'}, status=500)
