@@ -29,9 +29,7 @@
                     {% if user.is_authenticated %}
                         {% if user.is_superuser %}
                             <a href="{% url 'admin:index' %}" class="text-dark">Panel de Superusuario</a>
-
                             <a href="{% url 'mostrar_juegos' %}" class="text-dark ms-3">Administrar juegos</a>
-
                             <a href="{% url 'juegos_api' %}" class="text-dark ms-3">Probar API</a>
                         {% else %}
                             <a href="{% url 'panel_usuario' %}" class="text-dark">Panel de Usuario</a>
@@ -45,18 +43,8 @@
                         <a href="{% url 'registro' %}" class="text-dark ms-3">Registrarse</a>
                     {% endif %}
 
-                    <div class="carrito-container ms-4">
-                        <a href="{% url 'ver_carrito' %}">
-                            <img src="{% static 'imagenes/carrito.png' %}" alt="Carrito" class="img-fluid" style="width: 30px;">
-                        </a>
-                        <div class="carrito-dropdown">
-                            {% if carrito %}
-                                <p>Tienes {{ carrito|length }} elementos en tu carrito.</p>
-                            {% else %}
-                                <p>Tu carrito está vacío.</p>
-                            {% endif %}
-                        </div>
-                    </div>
+                    <!-- Aquí se incluye el carrito_hover.html -->
+                    {% include 'carrito_hover.html' %}
                 </div>
             </nav>
         </header>
