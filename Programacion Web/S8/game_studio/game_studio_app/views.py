@@ -1,7 +1,7 @@
 import json
 import logging, requests
 from .forms import UsuarioForm, LoginForm, JuegoForm
-from .models import Usuario, Juego, Categoria
+from .models import Usuario, Juego, Categoria, Carrito, ItemCarrito
 from django.http import JsonResponse
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
@@ -281,57 +281,195 @@ def modificar_perfil(request):
     
     return render(request, 'panel_usuario.html', {'usuario': usuario})
 
+# def agregar_carrito(request, juego_id):
+#     juego = get_object_or_404(Juego, id=juego_id)
+#     carrito = request.session.get('carrito', [])
+#     juego_en_carrito = next((item for item in carrito if item['producto']['id'] == juego.id), None)
+
+#     if juego_en_carrito:
+#         juego_en_carrito['cantidad'] += 1
+#     else:
+#         carrito.append({
+#             'producto': {
+#                 'id': juego.id,
+#                 'nombre': juego.titulo_juego,
+#                 'precio': float(juego.precio_juego),
+#                 'imagen': juego.imagen_juego.url if juego.imagen_juego else None
+#             },
+#             'cantidad': 1
+#         })
+
+#     request.session['carrito'] = carrito
+#     return redirect('ver_carrito')
+
+
+# def agregar_carrito(request, juego_id):
+#     juego = get_object_or_404(Juego, id=juego_id)
+
+#     # Obtener o crear un carrito para el usuario
+#     carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+
+#     # Buscar si el juego ya está en el carrito
+#     item, item_created = ItemCarrito.objects.get_or_create(carrito=carrito, juego=juego)
+
+#     if not item_created:
+#         # Si el item ya existe, incrementa la cantidad
+#         item.cantidad += 1
+#         item.save()
+#     else:
+#         item.cantidad = 1
+#         item.save()
+
+
+
+# def ver_carrito(request):
+#     carrito = request.session.get('carrito', [])
+#     total_carrito = sum(item['producto']['precio'] * item['cantidad'] for item in carrito)
+    
+#     return render(request, 'carrito.html', {
+#         'carrito': carrito,
+#         'total_carrito': total_carrito,
+#     })
+
+# def ver_carrito(request):
+#     # Obtener el carrito del usuario
+#     carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+    
+#     # Obtener todos los items del carrito
+#     items = CarritoItem.objects.filter(carrito=carrito)
+
+#     # Calcular el total del carrito
+#     total_carrito = sum(item.juego.precio_juego * item.cantidad for item in items)
+
+#     return render(request, 'carrito.html', {
+#         'carrito': items,
+#         'total_carrito': total_carrito,
+#     })
+
+
+# def ver_carrito(request):
+#     if request.user.is_authenticated:
+#         carrito, created = Carrito.objects.get_or_create(usuario=request.user)
+#         items_carrito = carrito.items.all()
+#         total_carrito = sum(item.subtotal for item in items_carrito)
+#     else:
+#         # Si el usuario no ha iniciado sesión, maneja el carrito en la sesión
+#         items_carrito = request.session.get('carrito', [])
+#         total_carrito = sum(item['producto']['precio'] * item['cantidad'] for item in items_carrito)
+
+#     return render(request, 'carrito.html', {
+#         'carrito': items_carrito,
+#         'total_carrito': total_carrito,
+#     })
+
+
+
+# def eliminar_del_carrito(request, producto_id):
+#     carrito = request.session.get('carrito', [])
+#     carrito = [item for item in carrito if item['producto']['id'] != producto_id]
+#     request.session['carrito'] = carrito
+#     return redirect('ver_carrito')
+
+# def eliminar_del_carrito(request, producto_id):
+#     # Obtener el carrito del usuario
+#     carrito = Carrito.objects.get(usuario=request.user)
+    
+#     # Obtener y eliminar el item del carrito
+#     item = get_object_or_404(ItemCarrito, carrito=carrito, juego_id=producto_id)
+#     item.delete()
+
+#     return redirect('ver_carrito')
+
+
+
+# def actualizar_cantidad(request, producto_id):
+#     if request.method == 'POST':
+#         nueva_cantidad = int(request.POST.get('cantidad', 1))
+#         carrito = request.session.get('carrito', [])
+
+#         for item in carrito:
+#             if item['producto']['id'] == producto_id:
+#                 item['cantidad'] = nueva_cantidad
+#                 break
+
+#         request.session['carrito'] = carrito
+#         request.session.modified = True
+
+#     return redirect('ver_carrito')
+
+
+# def actualizar_cantidad(request, producto_id):
+#     if request.method == 'POST':
+#         nueva_cantidad = int(request.POST.get('cantidad', 1))
+
+#         # Obtener el carrito del usuario
+#         carrito = Carrito.objects.get(usuario=request.user)
+        
+#         # Buscar el item del carrito y actualizar su cantidad
+#         item = ItemCarrito.objects.get(carrito=carrito, juego_id=producto_id)
+#         item.cantidad = nueva_cantidad
+#         item.save()
+
+#     return redirect('ver_carrito')
+
+from django.shortcuts import render, redirect, get_object_or_404
+from .models import Juego, Carrito, ItemCarrito
+from django.contrib.auth.decorators import login_required
+
+@login_required
 def agregar_carrito(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
-    carrito = request.session.get('carrito', [])
-    juego_en_carrito = next((item for item in carrito if item['producto']['id'] == juego.id), None)
+    usuario = request.user
 
-    if juego_en_carrito:
-        juego_en_carrito['cantidad'] += 1
-    else:
-        carrito.append({
-            'producto': {
-                'id': juego.id,
-                'nombre': juego.titulo_juego,
-                'precio': float(juego.precio_juego),
-                'imagen': juego.imagen_juego.url if juego.imagen_juego else None
-            },
-            'cantidad': 1
-        })
+    # Obtiene el carrito del usuario o lo crea si no existe
+    carrito, created = Carrito.objects.get_or_create(usuario=usuario)
 
-    request.session['carrito'] = carrito
+    # Verifica si el producto ya está en el carrito
+    item, item_created = ItemCarrito.objects.get_or_create(carrito=carrito, producto=juego)
+
+    if not item_created:
+        # Si el producto ya existe, incrementa la cantidad
+        item.cantidad += 1
+        item.save()
+
     return redirect('ver_carrito')
 
+@login_required
 def ver_carrito(request):
-    carrito = request.session.get('carrito', [])
-    total_carrito = sum(item['producto']['precio'] * item['cantidad'] for item in carrito)
-    
+    usuario = request.user
+    carrito = Carrito.objects.filter(usuario=usuario).first()
+    items = ItemCarrito.objects.filter(carrito=carrito) if carrito else []
+    total_carrito = sum(item.subtotal for item in items)
+
     return render(request, 'carrito.html', {
-        'carrito': carrito,
+        'carrito': items,
         'total_carrito': total_carrito,
     })
 
+@login_required
 def eliminar_del_carrito(request, producto_id):
-    carrito = request.session.get('carrito', [])
-    carrito = [item for item in carrito if item['producto']['id'] != producto_id]
-    request.session['carrito'] = carrito
+    usuario = request.user
+    carrito = Carrito.objects.filter(usuario=usuario).first()
+    if carrito:
+        ItemCarrito.objects.filter(carrito=carrito, producto_id=producto_id).delete()
+
     return redirect('ver_carrito')
 
-
+@login_required
 def actualizar_cantidad(request, producto_id):
     if request.method == 'POST':
         nueva_cantidad = int(request.POST.get('cantidad', 1))
-        carrito = request.session.get('carrito', [])
-
-        for item in carrito:
-            if item['producto']['id'] == producto_id:
-                item['cantidad'] = nueva_cantidad
-                break
-
-        request.session['carrito'] = carrito
-        request.session.modified = True
+        usuario = request.user
+        carrito = Carrito.objects.filter(usuario=usuario).first()
+        
+        if carrito:
+            item = ItemCarrito.objects.filter(carrito=carrito, producto_id=producto_id).first()
+            if item:
+                item.cantidad = nueva_cantidad
+                item.save()
 
     return redirect('ver_carrito')
+
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
