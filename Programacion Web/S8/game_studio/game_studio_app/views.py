@@ -451,9 +451,6 @@ def categorias_api(request, id=None):
         categoria = get_object_or_404(Categoria, pk=id)
         data = request.data.copy()
         
-        if 'id' in data:
-            del data['id']
-        
         serializer = CategoriaSerializer(categoria, data=data)
         
         if serializer.is_valid():
