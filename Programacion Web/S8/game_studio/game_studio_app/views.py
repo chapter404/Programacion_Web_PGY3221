@@ -1,11 +1,12 @@
+import json
 import logging, requests
-from django.urls import reverse
 from .forms import UsuarioForm, LoginForm, JuegoForm
-from .models import Usuario, Juego, Categoria
+from .models import Usuario, Juego, Categoria, Carrito, ItemCarrito
+from django.http import JsonResponse
 from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -15,6 +16,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CategoriaSerializer, JuegoSerializer
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
+
 
 
 
@@ -181,7 +185,6 @@ def crear_juego(request):
             else:
                 logger.debug('Formulario incompleto')
             
-
     else:
         form = JuegoForm()
 
@@ -262,7 +265,7 @@ def mostrar_categorias(request):
     return render(request, 'administrar_juegos/mostrar_categorias.html', {'categorias': categorias})
 
 
-
+@login_required
 def modificar_perfil(request):
     usuario = request.user.usuario 
     if request.method == 'POST':
@@ -282,60 +285,94 @@ def modificar_perfil(request):
     return render(request, 'panel_usuario.html', {'usuario': usuario})
 
 
-def ver_carrito(request):
-    carrito = request.session.get('carrito', [])
-    total_carrito = sum(item['precio'] * item['cantidad'] for item in carrito)
-    
-    return render(request, 'carrito.html', {
-        'carrito': carrito,
-        'total_carrito': total_carrito,
-    })
 
 
-def eliminar_del_carrito(request, producto_id):
-    carrito = request.session.get('carrito', [])
-
-    carrito = [item for item in carrito if item['producto']['id'] != producto_id]
-
-    request.session['carrito'] = carrito
-    
-    return redirect('ver_carrito')
-
+@login_required
 def agregar_carrito(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
+    usuario = request.user
+    carrito, created = Carrito.objects.get_or_create(usuario=usuario)
+    item, item_created = ItemCarrito.objects.get_or_create(carrito=carrito, producto=juego)
 
-    carrito = request.session.get('carrito', [])
+    if not item_created:
+        item.cantidad += 1
+        item.save()
+    
+    request.session['ultimo_item_agregado'] = item.id
+    request.session.modified = True
 
-    juego_en_carrito = next((item for item in carrito if item['producto']['id'] == juego.id), None)
+    return redirect(request.META.get('HTTP_REFERER', 'inicio'))
 
-    if juego_en_carrito:
-        juego_en_carrito['cantidad'] += 1
-    else:
-        carrito.append({
-            'producto': {
-                'id': juego.id,
-                'nombre': juego.titulo_juego,
-                'precio': float(juego.precio_juego),
-                'imagen': juego.imagen_juego.url if juego.imagen_juego else None
-            },
-            'cantidad': 1
-        })
 
-    request.session['carrito'] = carrito
+
+@login_required
+def ver_carrito(request):
+    usuario = request.user
+    carrito = Carrito.objects.filter(usuario=usuario).first()
+    items = ItemCarrito.objects.filter(carrito=carrito) if carrito else []
+    total_carrito = sum(item.subtotal for item in items)
+
+    return render(request, 'carrito.html', {
+        'carrito': items,
+        'total_carrito': total_carrito,
+    })
+
+@login_required
+def eliminar_del_carrito(request, producto_id):
+    usuario = request.user
+    carrito = Carrito.objects.filter(usuario=usuario).first()
+    if carrito:
+        ItemCarrito.objects.filter(carrito=carrito, producto_id=producto_id).delete()
 
     return redirect('ver_carrito')
 
-def ver_carrito(request):
+@login_required
+def actualizar_cantidad(request, producto_id):
+    if request.method == 'POST':
+        nueva_cantidad = int(request.POST.get('cantidad', 1))
+        usuario = request.user
+        carrito = Carrito.objects.filter(usuario=usuario).first()
+        
+        if carrito:
+            item = ItemCarrito.objects.filter(carrito=carrito, producto_id=producto_id).first()
+            if item:
+                item.cantidad = nueva_cantidad
+                item.save()
 
-    carrito = request.session.get('carrito', [])
+    return redirect('ver_carrito')
 
+@login_required
+def carrito_en_contexto(request):
+    if request.user.is_authenticated:
+        try:
+            carrito = Carrito.objects.get(usuario=request.user)
+            items = carrito.items.all()
+            total_carrito = sum(item.subtotal for item in items)
 
-    total_carrito = sum(item['producto']['precio'] * item['cantidad'] for item in carrito)
+            ultimo_item_agregado = request.session.get('ultimo_item_agregado', None)
 
-    return render(request, 'carrito.html', {
-        'carrito': carrito,
+            for item in items:
+                if item.id == ultimo_item_agregado:
+                    item.is_new = True
+                else:
+                    item.is_new = False
+            
+            if 'ultimo_item_agregado' in request.session:
+                del request.session['ultimo_item_agregado']
+                request.session.modified = True
+
+        except Carrito.DoesNotExist:
+            items = []
+            total_carrito = 0
+    else:
+        items = []
+        total_carrito = 0
+
+    return {
+        'carrito': items,
         'total_carrito': total_carrito,
-    })
+    }
+
 
 
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
@@ -372,6 +409,7 @@ def juegos_api(request, id=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@login_required
 def buscar_juegos(request):
     logger.debug('Ejecutando vista buscar_juegos')
     if request.method == 'POST':
@@ -389,6 +427,7 @@ def buscar_juegos(request):
     return render(request, 'administrar_juegos/buscar_juegos.html')
 
 
+@login_required
 def detalle_juego_seleccionado(request):
     if request.method == 'POST':
         juego_id = request.POST.get('juego_id')
@@ -414,5 +453,95 @@ def categorias_api(request, id=None):
         else:
             categorias = Categoria.objects.all()
             serializer = CategoriaSerializer(categorias, many=True)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
+
+    elif request.method == 'POST':
+        data = request.data.copy()
+
+        if 'id' in data:
+            del data['id']
+        
+        serializer = CategoriaSerializer(data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            logger.error(f"Errores en la validación del serializador: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'PUT':
+        if id is None:
+            return Response({'error': 'ID es requerido para actualizar una categoría.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        categoria = get_object_or_404(Categoria, pk=id)
+        data = request.data.copy()
+        
+        serializer = CategoriaSerializer(categoria, data=data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        else:
+            logger.error(f"Errores en la validación del serializador: {serializer.errors}")
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        if id is None:
+            return Response({'error': 'ID es requerido para eliminar una categoría.'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        categoria = get_object_or_404(Categoria, pk=id)
+        categoria.delete()
+        return Response({'message': 'Categoría eliminada con éxito'}, status=status.HTTP_204_NO_CONTENT)
     
+    return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
+    
+
+@login_required
+def traducir_texto(request):
+    if request.method == 'POST':
+        data = json.loads(request.body)
+        descripcion_juego = data.get('descripcion_juego', '')
+
+        url = "https://api-free.deepl.com/v2/translate"
+        payload = {
+            "text": [descripcion_juego],
+            "target_lang": "ES"
+        }
+        headers = {
+            'Content-Type': 'application/json',
+            'Authorization': 'DeepL-Auth-Key 38880200-ee60-43c1-8d26-51525ec06337:fx'
+        }
+        response = requests.post(url, headers=headers, json=payload)
+
+        if response.status_code == 200:
+            traduccion = response.json()["translations"][0]["text"]
+            return JsonResponse({'texto_traducido': traduccion})
+        else:
+            return JsonResponse({'error': 'Error al traducir el texto'}, status=500)
+
+
+def recuperar_contraseña(request):
+    if request.method == 'POST':
+        nombre_usuario = request.POST.get('nombre_usuario')
+        nueva_contraseña = request.POST.get('nueva_contraseña')
+        confirmar_contraseña = request.POST.get('confirmar_contraseña')
+
+        try:
+            usuario = User.objects.get(username=nombre_usuario)
+            logger.debug(f"Usuario encontrado: {usuario.username}")
+            
+            if nueva_contraseña and confirmar_contraseña and nueva_contraseña == confirmar_contraseña:
+                usuario.set_password(nueva_contraseña)
+                usuario.save()
+                logger.debug("Contraseña actualizada correctamente")
+                messages.success(request, 'Contraseña actualizada correctamente.')
+                return redirect('iniciar_sesion')
+            else:
+                messages.error(request, 'Las contraseñas no coinciden o son inválidas.')
+        
+        except User.DoesNotExist:
+            messages.error(request, 'El nombre de usuario no existe.')
+            logger.debug("El nombre de usuario no existe")
+
+    return render(request, 'recuperar_contraseña.html')

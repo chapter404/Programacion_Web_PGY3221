@@ -2,8 +2,6 @@
 
 from django.urls import path
 from . import views
-from django.contrib import admin
-from django.contrib.auth import views as auth_views
 from django.contrib.auth.views import LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
@@ -47,12 +45,16 @@ urlpatterns = [
     path('carrito/', views.ver_carrito, name='ver_carrito'),
     path('agregar_carrito/<int:juego_id>/', views.agregar_carrito, name='agregar_carrito'),
     path('carrito/eliminar/<int:producto_id>/', views.eliminar_del_carrito, name='eliminar_del_carrito'),
+    path('carrito/actualizar/<int:producto_id>/', views.actualizar_cantidad, name='actualizar_cantidad'),
     path('api/juegos/', views.juegos_api, name='juegos_api'),
     path('api/juegos/<int:id>/', views.juegos_api, name='juego_api_detalle'),
     path('api/categorias/', views.categorias_api, name='categorias_api'),
+    path('api/categorias/<int:id>/', views.categorias_api, name='categorias_api_detalle'),
     path('buscar_juegos/', views.buscar_juegos, name='buscar_juegos'),
     path('detalle_juego_seleccionado', views.detalle_juego_seleccionado, name='detalle_juego_seleccionado'),
-
+    path('traducir_texto', views.traducir_texto, name='traducir_texto'),
+    path('ver_carrito/', views.ver_carrito, name='ver_carrito'),
+    path('recuperar_contraseña/', views.recuperar_contraseña, name='recuperar_contraseña'),
 ]
 
 if settings.DEBUG:

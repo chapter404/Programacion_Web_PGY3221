@@ -1,0 +1,29 @@
+.table {
+    width: 80%;
+}
+
+.btn-primary {
+    padding: 5px 10px;
+    margin-right: 5px;
+    display: inline-block;
+}
+
+.btn-success {
+    background-color: #fbc02d;
+    color: black;
+    border: 2px solid #fbc02d;
+    font-weight: bold;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin: 20px auto;
+    display: block;
+    width: fit-content;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #fbc02d;
+}
+
+.btn-success:hover {
+    background-color: #ffc107;
+    box-shadow: 0 0 15px #ffc107;
+}

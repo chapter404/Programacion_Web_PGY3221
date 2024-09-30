@@ -65,10 +65,12 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'game_studio_app.context_processors.carrito', 
             ],
         },
     },
 ]
+
 
 WSGI_APPLICATION = 'game_studio.wsgi.application'
 
@@ -80,16 +82,18 @@ WSGI_APPLICATION = 'game_studio.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.oracle',
-        'NAME': 'gsbohitl0d7xba5e_high',
+        'NAME': 'bdgenerica2024_high',
         'USER': 'ADMIN',
-        'PASSWORD': 'Trinidad.1012',
+        'PASSWORD': 'Oracle123456',
         'OPTIONS': {
-            'config_dir': r'C:\Users\erika\Desktop\Duoc\wallet\Wallet_GSBOHITL0D7XBA5E',
-            'wallet_location': r'C:\Users\erika\Desktop\Duoc\wallet\Wallet_GSBOHITL0D7XBA5E',
-            'wallet_password': 'Trinidad.1012',
+            'config_dir': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
+            'wallet_location': r'C:\Users\kiru\Oracle\network\admin\BDGenerica2024',
+            'wallet_password': 'Oracle123456',
         }
     }
 }
+
+
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
@@ -124,7 +128,7 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'game_studio_app/static'), )
 
 # Default primary key field type

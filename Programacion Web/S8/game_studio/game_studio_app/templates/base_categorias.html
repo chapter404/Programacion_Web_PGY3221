@@ -38,6 +38,24 @@
             color: #555;
         }
 
+        .dropdown-items {
+            max-height: 150px;
+            overflow-y: auto;
+        }
+
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 5px 0;
+        }
+
+        .dropdown-item img {
+            width: 40px;
+            height: auto;
+            margin-right: 5px;
+        }
+
         .busqueda {
             display: flex;
             align-items: center;
@@ -47,6 +65,22 @@
 
         .busqueda input {
             margin-right: 10px;
+
+
+            
+        }
+
+        @keyframes updated {
+            0% {
+                background-color: #ffe6e6;
+            }
+            100% {
+                background-color: transparent;
+            }
+        }
+    
+        .updated-item {
+            animation: updated 2s ease-in-out;
         }
     </style>
 </head>
@@ -58,8 +92,17 @@
                 <img src="{% static 'imagenes/carrito.png' %}" alt="Carrito" class="img-fluid" style="width: 30px;">
             </a>
             <div class="carrito-dropdown">
-                {% if carrito %}
-                    <p>Tienes {{ carrito|length }} elementos en tu carrito.</p>
+                {% if carrito and carrito.items.count > 0 %}
+                    <div class="dropdown-items">
+                        {% for item in carrito.items.all %}
+                            <div class="dropdown-item d-flex justify-content-between align-items-center">
+                                <img src="{{ item.producto.imagen_juego.url }}" alt="{{ item.producto.titulo_juego }}">
+                                <span>{{ item.producto.titulo_juego }}</span>
+                                <span>x{{ item.cantidad }}</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <p>Total: ${{ carrito.total }}</p>
                 {% else %}
                     <p>Tu carrito está vacío.</p>
                 {% endif %}
