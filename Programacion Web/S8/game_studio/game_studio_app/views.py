@@ -7,6 +7,7 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
+from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -19,6 +20,7 @@ from .serializers import CategoriaSerializer, JuegoSerializer
 from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.views import PasswordResetView
 from django.urls import reverse_lazy
+
 
 
 
@@ -286,51 +288,21 @@ def modificar_perfil(request):
 
 
 
-from django.shortcuts import render, redirect, get_object_or_404
-from .models import Juego, Carrito, ItemCarrito
-from django.contrib.auth.decorators import login_required
-
-
-# @login_required
-# def agregar_carrito(request, juego_id):
-#     juego = get_object_or_404(Juego, id=juego_id)
-#     usuario = request.user
-
-#     # Obtiene el carrito del usuario o lo crea si no existe
-#     carrito, created = Carrito.objects.get_or_create(usuario=usuario)
-
-#     # Verifica si el producto ya está en el carrito
-#     item, item_created = ItemCarrito.objects.get_or_create(carrito=carrito, producto=juego)
-
-#     if not item_created:
-#         # Si el producto ya existe, incrementa la cantidad
-#         item.cantidad += 1
-#         item.save()
-
-#     # Redirigir a la página anterior
-#     return redirect(request.META.get('HTTP_REFERER', 'inicio'))
 
 @login_required
 def agregar_carrito(request, juego_id):
     juego = get_object_or_404(Juego, id=juego_id)
     usuario = request.user
-
-    # Obtiene el carrito del usuario o lo crea si no existe
     carrito, created = Carrito.objects.get_or_create(usuario=usuario)
-
-    # Verifica si el producto ya está en el carrito
     item, item_created = ItemCarrito.objects.get_or_create(carrito=carrito, producto=juego)
 
     if not item_created:
-        # Si el producto ya existe, incrementa la cantidad
         item.cantidad += 1
         item.save()
     
-    # Guardar en la sesión la ID del último item agregado para usarlo en la animación
     request.session['ultimo_item_agregado'] = item.id
     request.session.modified = True
 
-    # Redirigir a la página anterior
     return redirect(request.META.get('HTTP_REFERER', 'inicio'))
 
 
@@ -378,17 +350,14 @@ def carrito_en_contexto(request):
             items = carrito.items.all()
             total_carrito = sum(item.subtotal for item in items)
 
-            # Obtener el ID del último item agregado
             ultimo_item_agregado = request.session.get('ultimo_item_agregado', None)
 
-            # Añadir una marca de 'is_new' a los elementos si coinciden
             for item in items:
                 if item.id == ultimo_item_agregado:
                     item.is_new = True
                 else:
                     item.is_new = False
             
-            # Limpiar la variable de sesión
             if 'ultimo_item_agregado' in request.session:
                 del request.session['ultimo_item_agregado']
                 request.session.modified = True
@@ -473,19 +442,6 @@ def detalle_juego_seleccionado(request):
     return redirect('buscar_juegos')
 
 
-# @api_view(['GET', 'POST', 'PUT', 'DELETE'])
-# @permission_classes([IsAuthenticated])
-# def categorias_api(request, id=None):
-#     if request.method == 'GET':
-#         if id:
-#             categoria = get_object_or_404(Categoria, pk=id)
-#             serializer = CategoriaSerializer(categoria)
-#         else:
-#             categorias = Categoria.objects.all()
-#             serializer = CategoriaSerializer(categorias, many=True)
-#         return Response(serializer.data)
-
-
 @api_view(['GET', 'POST', 'PUT', 'DELETE'])
 @permission_classes([IsAuthenticated])
 def categorias_api(request, id=None):
@@ -568,7 +524,6 @@ class CustomPasswordResetView(PasswordResetView):
     success_url = reverse_lazy('login') 
     email_template_name = 'password_reset_email.html'  # El template para el correo electrónico
 
-from django.contrib.auth.hashers import make_password
 
 def recuperar_contraseña(request):
     if request.method == 'POST':
