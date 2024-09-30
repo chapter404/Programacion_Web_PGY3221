@@ -7,7 +7,6 @@ from django.core.files.base import ContentFile
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login, authenticate
-from django.contrib.auth.hashers import make_password
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
@@ -17,7 +16,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CategoriaSerializer, JuegoSerializer
-from django.contrib.auth.forms import PasswordResetForm
 from django.contrib.auth.views import PasswordResetView
 from django.urls import reverse_lazy
 
@@ -267,7 +265,7 @@ def mostrar_categorias(request):
     return render(request, 'administrar_juegos/mostrar_categorias.html', {'categorias': categorias})
 
 
-
+@login_required
 def modificar_perfil(request):
     usuario = request.user.usuario 
     if request.method == 'POST':
@@ -343,6 +341,7 @@ def actualizar_cantidad(request, producto_id):
 
     return redirect('ver_carrito')
 
+@login_required
 def carrito_en_contexto(request):
     if request.user.is_authenticated:
         try:
@@ -410,6 +409,7 @@ def juegos_api(request, id=None):
         return Response(status=status.HTTP_204_NO_CONTENT)
 
 
+@login_required
 def buscar_juegos(request):
     logger.debug('Ejecutando vista buscar_juegos')
     if request.method == 'POST':
@@ -427,6 +427,7 @@ def buscar_juegos(request):
     return render(request, 'administrar_juegos/buscar_juegos.html')
 
 
+@login_required
 def detalle_juego_seleccionado(request):
     if request.method == 'POST':
         juego_id = request.POST.get('juego_id')
@@ -496,6 +497,7 @@ def categorias_api(request, id=None):
     return Response({'error': 'Método no permitido'}, status=status.HTTP_405_METHOD_NOT_ALLOWED)
     
 
+@login_required
 def traducir_texto(request):
     if request.method == 'POST':
         data = json.loads(request.body)
@@ -517,12 +519,6 @@ def traducir_texto(request):
             return JsonResponse({'texto_traducido': traduccion})
         else:
             return JsonResponse({'error': 'Error al traducir el texto'}, status=500)
-
-
-class CustomPasswordResetView(PasswordResetView):
-    template_name = 'recuperar_contraseña.html'
-    success_url = reverse_lazy('login') 
-    email_template_name = 'password_reset_email.html'  # El template para el correo electrónico
 
 
 def recuperar_contraseña(request):

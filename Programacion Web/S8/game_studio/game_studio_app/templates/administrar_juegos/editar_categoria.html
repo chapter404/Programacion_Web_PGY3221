@@ -7,7 +7,7 @@
     {% csrf_token %}
     <label for="nombre">Nombre de la Categoría:</label>
     <input type="text" id="nombre" name="nombre" value="{{ categoria.nombre_categoria }}" required>
-    <button type="submit">Guardar Cambios</button>
+    <button type="submit" class="btn btn-primary">Guardar Cambios</button>
 </form>
 <a href="{% url 'mostrar_categorias' %}" class="btn btn-secondary">Cancelar</a>
 {% endblock %}

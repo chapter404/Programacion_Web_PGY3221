@@ -1,0 +1,92 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    background: url("https://c4.wallpaperflare.com/wallpaper/644/305/118/pattern-black-gradient-texture-wallpaper-preview.jpg") no-repeat center center fixed;
+    background-size: cover;
+    color: #f1c40f;
+    margin: 0;
+    padding: 0;
+}
+
+h2 {
+    color: #fbc02d;
+    text-align: center;
+    margin-top: 20px;
+    text-shadow: 0 0 5px #f1c40f;
+}
+
+.table {
+    width: 90%;
+    margin: 20px auto;
+    border-collapse: collapse;
+    background-color: white;
+    color: #333;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.table thead {
+    background-color: #fbc02d;
+}
+
+.table th {
+    color: black;
+    padding: 15px;
+    text-align: left;
+    font-weight: bold;
+    border: none;
+}
+
+.table td {
+    padding: 15px;
+    background-color: white;
+    border-bottom: 1px solid #f1c40f;
+    transition: background-color 0.3s ease;
+}
+
+.table tr:hover td {
+    background-color: #f9f9f9;
+}
+
+.btn-primary {
+    background-color: #fbc02d;
+    color: black;
+    border: 2px solid #fbc02d;
+    font-weight: bold;
+    padding: 10px 15px;
+    text-decoration: none;
+    box-shadow: 0 0 10px #fbc02d;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.btn-primary:hover {
+    background-color: #ffc107;
+    color: black;
+    box-shadow: 0 0 15px #ffc107;
+}
+
+.btn-danger {
+    background-color: #f1c40f;
+    color: black;
+    border: 2px solid #f1c40f;
+    padding: 5px 10px;
+    box-shadow: 0 0 5px #f1c40f;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+}
+
+.btn-danger:hover {
+    background-color: #ffc107;
+    color: black;
+    box-shadow: 0 0 10px #ffc107;
+}
+
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
