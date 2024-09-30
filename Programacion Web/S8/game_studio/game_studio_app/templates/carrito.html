@@ -10,12 +10,13 @@
     <title>Carrito de Compras</title>
     <style>
         body {
-            background-color: #f8f9fa;
+            background-color: #1c1c1c;
+            color: #fff;
         }
 
         .pagina-carrito {
             padding: 40px;
-            background-color: #fff;
+            background-color: #2a2a2a;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
@@ -23,20 +24,20 @@
         .pagina-carrito h1 {
             margin-bottom: 30px;
             font-weight: bold;
-            color: #333;
+            color: #fff;
         }
 
         .elemento-carrito {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid #444;
             padding: 15px 0;
             transition: background-color 0.3s ease;
         }
 
         .elemento-carrito:hover {
-            background-color: #f1f1f1;
+            background-color: #333;
         }
 
         .elemento-carrito img {
@@ -49,6 +50,45 @@
             flex-grow: 1;
             margin-left: 15px;
             font-size: 16px;
+            max-width: 500px;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            width: 150px;
+        }
+
+        .input-group input {
+            width: 80px;
+            margin-right: 5px;
+            text-align: center;
+            padding: 3px 5px;
+            font-size: 14px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #fbc02d;
+        }
+
+        .input-group button {
+            padding: 3px 8px;
+            font-size: 14px;
+            background-color: #fbc02d;
+            color: #333;
+            border: none;
+            border-radius: 4px;
+            box-shadow: 0px 0px 5px #fbc02d;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .input-group button:hover {
+            background-color: #fbc02d;
+            box-shadow: 0px 0px 10px #fbc02d;
         }
 
         .acciones-elemento {
@@ -58,62 +98,54 @@
 
         .precio-elemento {
             font-size: 18px;
-            color: #28a745;
+            color: #fbc02d;
             font-weight: bold;
             margin-right: 20px;
         }
 
         .btn-eliminar {
-            background-color: #dc3545;
-            color: white;
+            background-color: #fbc02d;
+            color: #333;
             border: none;
-            padding: 8px 12px;
+            padding: 6px 10px;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            box-shadow: 0px 0px 5px #fbc02d;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
         .btn-eliminar:hover {
-            background-color: #c82333;
+            background-color: #fbc02d;
+            box-shadow: 0px 0px 10px #fbc02d;
         }
 
         .precio-total {
             text-align: right;
             font-size: 24px;
-            color: #333;
+            color: #fbc02d;
             margin-top: 30px;
         }
 
-        .btn-pago {
-            display: block;
-            margin: 30px 0;
-            background-color: #007bff;
-            color: white;
+        .btn-pago,
+        .btn-volver {
+            display: inline-block;
+            margin: 20px 10px 0 0; /* Espacio entre los botones */
+            background-color: #fbc02d;
+            color: #333;
             padding: 10px 20px;
-            font-size: 18px;
+            font-size: 16px;
             border: none;
             border-radius: 4px;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            box-shadow: 0px 0px 5px #fbc02d;
             text-align: center;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .btn-pago:hover {
-            background-color: #0056b3;
-        }
-
-        .mensaje-vacio {
-            text-align: center;
-            color: #555;
-        }
-
-        .mensaje-vacio a {
-            color: #007bff;
-            text-decoration: none;
-        }
-
-        .mensaje-vacio a:hover {
-            text-decoration: underline;
+        .btn-pago:hover,
+        .btn-volver:hover {
+            background-color: #fbc02d;
+            box-shadow: 0px 0px 10px #fbc02d;
         }
     </style>
 </head>
@@ -125,13 +157,19 @@
         {% if carrito and carrito|length > 0 %}
             {% for item in carrito %}
             <div class="elemento-carrito">
-                <img src="{{ item.producto.imagen.url }}" alt="{{ item.producto.nombre }}">
+                <img src="{{ item.producto.imagen_juego.url }}" alt="{{ item.producto.titulo_juego }}">
                 <div class="informacion-elemento">
-                    <h4>{{ item.producto.nombre }}</h4>
-                    <p>Cantidad: {{ item.cantidad }}</p>
+                    <h4>{{ item.producto.titulo_juego }}</h4>
+                    <form method="POST" action="{% url 'actualizar_cantidad' item.producto.id %}">
+                        {% csrf_token %}
+                        <div class="input-group">
+                            <input type="number" name="cantidad" value="{{ item.cantidad }}" min="1" class="form-control">
+                            <button type="submit" class="btn btn-primary ms-2">Actualizar</button>
+                        </div>
+                    </form>
                 </div>
                 <div class="acciones-elemento">
-                    <span class="precio-elemento">${{ item.producto.precio }}</span>
+                    <span class="precio-elemento">${{ item.subtotal }}</span>
                     <form method="POST" action="{% url 'eliminar_del_carrito' item.producto.id %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-eliminar">Eliminar</button>
@@ -144,6 +182,7 @@
                 <strong>Total:</strong> ${{ total_carrito }}
             </div>
 
+            <a href="{% url 'inicio' %}" class="btn-volver">Menú Principal</a>
             <button class="btn-pago">Proceder al Pago</button>
         {% else %}
             <div class="mensaje-vacio">
