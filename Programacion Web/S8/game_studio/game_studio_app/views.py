@@ -16,6 +16,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework import status
 from .serializers import CategoriaSerializer, JuegoSerializer
+from django.contrib.auth.forms import PasswordResetForm
+from django.contrib.auth.views import PasswordResetView
+from django.urls import reverse_lazy
 
 
 
@@ -558,3 +561,36 @@ def traducir_texto(request):
             return JsonResponse({'texto_traducido': traduccion})
         else:
             return JsonResponse({'error': 'Error al traducir el texto'}, status=500)
+
+
+class CustomPasswordResetView(PasswordResetView):
+    template_name = 'recuperar_contraseña.html'
+    success_url = reverse_lazy('login') 
+    email_template_name = 'password_reset_email.html'  # El template para el correo electrónico
+
+from django.contrib.auth.hashers import make_password
+
+def recuperar_contraseña(request):
+    if request.method == 'POST':
+        nombre_usuario = request.POST.get('nombre_usuario')
+        nueva_contraseña = request.POST.get('nueva_contraseña')
+        confirmar_contraseña = request.POST.get('confirmar_contraseña')
+
+        try:
+            usuario = User.objects.get(username=nombre_usuario)
+            logger.debug(f"Usuario encontrado: {usuario.username}")
+            
+            if nueva_contraseña and confirmar_contraseña and nueva_contraseña == confirmar_contraseña:
+                usuario.set_password(nueva_contraseña)
+                usuario.save()
+                logger.debug("Contraseña actualizada correctamente")
+                messages.success(request, 'Contraseña actualizada correctamente.')
+                return redirect('iniciar_sesion')
+            else:
+                messages.error(request, 'Las contraseñas no coinciden o son inválidas.')
+        
+        except User.DoesNotExist:
+            messages.error(request, 'El nombre de usuario no existe.')
+            logger.debug("El nombre de usuario no existe")
+
+    return render(request, 'recuperar_contraseña.html')

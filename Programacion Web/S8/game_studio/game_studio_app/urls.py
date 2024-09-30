@@ -5,6 +5,7 @@ from . import views
 from django.contrib.auth.views import LogoutView
 from django.conf import settings
 from django.conf.urls.static import static
+from .views import CustomPasswordResetView
 
 urlpatterns = [
     path('', views.inicio, name='inicio'),
@@ -54,6 +55,7 @@ urlpatterns = [
     path('detalle_juego_seleccionado', views.detalle_juego_seleccionado, name='detalle_juego_seleccionado'),
     path('traducir_texto', views.traducir_texto, name='traducir_texto'),
     path('ver_carrito/', views.ver_carrito, name='ver_carrito'),
+    path('recuperar_contraseña/', views.recuperar_contraseña, name='recuperar_contraseña'),
 ]
 
 if settings.DEBUG:
