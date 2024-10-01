@@ -94,22 +94,26 @@ def registrar(request):
     if request.method == 'POST':
         form = UsuarioForm(request.POST)
         if form.is_valid():
-            user = User.objects.create_user(
-                username=form.cleaned_data['nombre_usuario'],
-                email=form.cleaned_data['correo'],
-                password=form.cleaned_data['clave']
-            )
-            usuario = form.save(commit=False)  
-            usuario.user = user
-            usuario.save()
-            messages.success(request, 'Registro exitoso')
-            return redirect('iniciar_sesion')
+            if User.objects.filter(username=form.cleaned_data['nombre_usuario']).exists():
+                messages.error(request, 'El nombre de usuario ya está en uso. Por favor, elija otro.')
+                logger.debug('Nombre de usuario ya está en uso')
+            else:
+                user = User.objects.create_user(
+                    username=form.cleaned_data['nombre_usuario'],
+                    email=form.cleaned_data['correo'],
+                    password=form.cleaned_data['clave']
+                )
+                usuario = form.save(commit=False)  
+                usuario.user = user
+                usuario.save()
+                messages.success(request, 'Registro exitoso')
+                return redirect('iniciar_sesion')
         else:
             messages.error(request, 'Por favor, corrija los errores del formulario')
     else:
         form = UsuarioForm()
 
-    return render(request, 'form.html', {'form': form})
+    return render(request, 'formulario_registro.html',{'form':form})
 
 
 def iniciar_sesion(request):
