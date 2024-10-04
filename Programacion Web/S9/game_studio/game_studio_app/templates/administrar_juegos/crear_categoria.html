@@ -1,0 +1,13 @@
+{% extends 'administrar_juegos/base_juego.html' %}
+
+{% block content %}
+
+<h2>{% if form.instance.pk %}Editar Categoría{% else %}Crear Categoría{% endif %}</h2>
+<form method="POST" action="{% url 'crear_categoria' %}">
+    {% csrf_token %}
+    <label for="nombre_categoria">Nombre de la Categoría:</label>
+    <input type="text" id="nombre_categoria" name="nombre_categoria" required>
+    <button type="submit" class="btn btn-primary">Crear Categoría</button>
+</form>
+<a href="{% url 'mostrar_categorias' %}" class="btn btn-secondary">Cancelar</a>
+{% endblock %}

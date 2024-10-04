@@ -1,0 +1,33 @@
+{% extends 'administrar_juegos/base_juego.html' %}
+
+{% load static %}
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/crear_juego.css' %}">
+<h2>{% if form.instance.pk %}Editar Juego{% else %}Crear Juego{% endif %}</h2>
+<form method="POST" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if imagen_juego_url %}
+    <div class="form-group">
+        <label for="imagen_juego_preview">Previsualización de la imagen:</label><br>
+        <img id="imagen_juego_preview" src="{{ imagen_juego_url }}" alt="Imagen del juego" style="width: 150px; height: auto;"><br>
+        <label>
+            <input type="checkbox" name="usar_imagen" value="True"> Usar esta imagen para el juego
+        </label>
+    </div>
+    {% endif %}
+
+    <div class="button-group">
+        <button type="submit" class="btn btn-success">Guardar</button>
+        <a href="{% url 'mostrar_juegos' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="button" id="btn-traducir" class="btn btn-success">Traducir Descripción</button>
+        <a href="{% url 'buscar_juegos' %}" class="btn btn-success">Buscar juego con GiantBomb API</a>
+    </div>
+</form>
+
+<script>
+    var url_traducir = "{% url 'traducir_texto' %}";
+</script>
+<script src="{% static 'js/traducir.js' %}"></script>
+{% endblock %}

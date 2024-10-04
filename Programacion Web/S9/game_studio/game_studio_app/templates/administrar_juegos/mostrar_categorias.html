@@ -1,0 +1,35 @@
+{% extends 'administrar_juegos/base_juego.html' %}
+{% load static %}
+{% block title %}Lista de Categorías{% endblock %}
+
+{% block content %}
+<link rel="stylesheet" href="{% static 'css/mostrar_categorias.css' %}">
+<h2>Lista de Categorías</h2>
+<table class="table">
+    <thead>
+        <tr>
+            <th>Nombre de la Categoría</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for categoria in categorias %}
+        <tr>
+            <td>{{ categoria.nombre_categoria }}</td>
+            <td>
+                <a href="{% url 'editar_categoria' categoria.id %}" class="btn btn-primary">Editar</a>
+                <form action="{% url 'eliminar_categoria' categoria.id %}" method="POST" style="display:inline;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                </form>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="2">No hay categorías disponibles.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a href="{% url 'crear_categoria' %}" class="btn btn-success">Crear Nueva Categoría</a>
+{% endblock %}

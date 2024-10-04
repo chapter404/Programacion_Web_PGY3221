@@ -1,0 +1,113 @@
+form {
+    width: 80%;
+    max-width: 800px;
+    margin: 20px auto;
+    background-color: #333;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
+    color: #f1c40f;
+}
+
+form label {
+    font-weight: bold;
+    color: #fbc02d;
+}
+
+form input[type="text"],
+form input[type="number"],
+form input[type="file"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 5px 0 10px;
+    border: 2px solid #f1c40f;
+    border-radius: 5px;
+    background-color: #222;
+    color: #f1c40f;
+}
+
+form input[type="text"]:focus,
+form input[type="number"]:focus,
+form input[type="file"]:focus,
+form select:focus,
+form textarea:focus {
+    border-color: #ffc107;
+    outline: none;
+    box-shadow: 0 0 5px #ffc107;
+}
+
+.btn-success {
+    background-color: #fbc02d;
+    color: black;
+    border: 2px solid #fbc02d;
+    font-weight: bold;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin: 5px;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    display: inline-block;
+    box-shadow: 0 0 10px #fbc02d;
+}
+
+.btn-success:hover {
+    background-color: #ffc107;
+    box-shadow: 0 0 15px #ffc107;
+}
+
+.btn-secondary {
+    background-color: #666;
+    color: white;
+    border: 2px solid #f1c40f;
+    font-weight: bold;
+    padding: 10px 15px;
+    text-decoration: none;
+    margin: 5px;
+    transition: all 0.3s ease;
+    border-radius: 5px;
+    display: inline-block;
+    box-shadow: 0 0 10px #f1c40f;
+}
+
+.btn-secondary:hover {
+    background-color: #999;
+    color: black;
+    box-shadow: 0 0 10px #ffc107;
+}
+
+.form-group {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #f1c40f;
+    border-radius: 5px;
+    background-color: #222;
+}
+
+#imagen_juego_preview {
+    border: 2px solid #f1c40f;
+    border-radius: 5px;
+    box-shadow: 0 0 10px #fbc02d;
+    margin-top: 10px;
+}
+
+.button-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.button-group .btn {
+    width: 100%;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.button-group a,
+.button-group button {
+    margin: 0;
+}
+
+

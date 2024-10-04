@@ -1,0 +1,24 @@
+{% load static %}
+<div class="carrito-container position-relative">
+    <a href="{% url 'ver_carrito' %}">
+        <img src="{% static 'imagenes/carrito.png' %}" alt="Carrito" class="img-fluid" style="width: 30px;">
+    </a>
+    <div class="carrito-dropdown position-absolute bg-white p-2 shadow" style="width: 250px;">
+        {% if carrito and carrito.items.count > 0 %}
+            <div class="dropdown-items">
+                {% for item in carrito.items.all %}
+                    <div class="dropdown-item d-flex justify-content-between align-items-center mb-1">
+                        <img src="{{ item.producto.imagen_juego.url }}" alt="{{ item.producto.titulo_juego }}" style="width: 40px; height: auto;">
+                        <span>{{ item.producto.titulo_juego }}</span>
+                        <span>x{{ item.cantidad }}</span>
+                    </div>
+                {% endfor %}
+                <div class="text-end mt-2">
+                    <a href="{% url 'ver_carrito' %}" class="btn btn-primary btn-sm">Ver Carrito</a>
+                </div>
+            </div>
+        {% else %}
+            <p class="text-center text-muted">Tu carrito está vacío.</p>
+        {% endif %}
+    </div>
+</div>
